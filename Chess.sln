@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32407.343
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessGUI", "ChessGUI\ChessGUI.csproj", "{11063619-B579-4FD9-9AA0-006A2C37C8A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessPiece", "ChessPiece\ChessPiece.csproj", "{F30899AA-1B80-419C-B10C-7577CF156867}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess", "Chess\Chess.csproj", "{43E3F6BE-E6E3-48B5-9C4B-E5E826FC7984}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{11063619-B579-4FD9-9AA0-006A2C37C8A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11063619-B579-4FD9-9AA0-006A2C37C8A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11063619-B579-4FD9-9AA0-006A2C37C8A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11063619-B579-4FD9-9AA0-006A2C37C8A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F30899AA-1B80-419C-B10C-7577CF156867}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F30899AA-1B80-419C-B10C-7577CF156867}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F30899AA-1B80-419C-B10C-7577CF156867}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F30899AA-1B80-419C-B10C-7577CF156867}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43E3F6BE-E6E3-48B5-9C4B-E5E826FC7984}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43E3F6BE-E6E3-48B5-9C4B-E5E826FC7984}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43E3F6BE-E6E3-48B5-9C4B-E5E826FC7984}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43E3F6BE-E6E3-48B5-9C4B-E5E826FC7984}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E48DB88B-4E1B-416E-8BAF-2CA3E2ADADBD}
+	EndGlobalSection
+EndGlobal
