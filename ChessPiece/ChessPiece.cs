@@ -35,10 +35,17 @@ namespace Chess
         {
             if(MoveIsLegal(requestedRow, requestedColumn))
             {
-
+                location.Row = requestedRow;
+                location.Col = requestedColumn;
             }
         }
 
+        /// <summary>
+        /// ChessPiece constructor that gives a color, and location
+        /// </summary>
+        /// <param name="color"></param>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
         public ChessPiece(char color, int row, int column)
         {
             Color = color;
