@@ -53,7 +53,17 @@
         /// <returns></returns>
         public bool IsOccupiecd()
         {
-            return true;
+            return occupant != null;
+        }
+
+        public bool isOccupiedByBlack()
+        {
+            return occupant is not null && occupant.Color == 'B';
+        }
+
+        public bool isOccupiedByWhite()
+        {
+            return occupant is not null && occupant.Color == 'W';
         }
     }
 }

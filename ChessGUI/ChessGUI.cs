@@ -1,4 +1,5 @@
 using Chess;
+using System.Diagnostics;
 
 namespace ChessGUI
 {
@@ -16,6 +17,11 @@ namespace ChessGUI
         /// Indicates whose turn it is
         /// </summary>
         private bool whiteTurn;
+
+        /// <summary>
+        /// Keeps track of the current square the user has clicked and wants to move if possible
+        /// </summary>
+        private Square currSquareClicked;
 
         public Chess()
         {
@@ -41,11 +47,75 @@ namespace ChessGUI
         /// <param name="boardSize"></param>
         private void CreateBoard(int boardSize)
         {
-            for (int i = 0; i < boardSize; i++)
+            for (int column = 0; column < boardSize; column++)
             {
-                for (int j = 0; j < boardSize; j++)
+                for (int row = 0; row < boardSize; row++)
                 {
-                    chessBoard[i, j] = new Square(i, j, null);
+                    //White Pawn
+                    if(row == 6)
+                    {
+                        chessBoard[column, row] = new Square(column, row, new Pawn('W', column, row));
+                    }
+                    //Black Pawn
+                    else if (row == 1)
+                    {
+                        chessBoard[column, row] = new Square(column, row, new Pawn('B', column, row));
+                    }
+                    //White King
+                    else if (row == 7 && column == 3)
+                    {
+                        chessBoard[column, row] = new Square(column, row, new King('W', column, row));
+                    }
+                    //Black King
+                    else if (row == 0 && column == 3)
+                    {
+                        chessBoard[column, row] = new Square(column, row, new King('B', column, row));
+                    }
+                    //White Queen
+                    else if (row == 7 && column == 4)
+                    {
+                        chessBoard[column, row] = new Square(column, row, new Queen('W', column, row));
+                    }
+                    //Black Queen
+                    else if (row == 0 && column == 4)
+                    {
+                        chessBoard[column, row] = new Square(column, row, new Queen('B', column, row));
+                    }
+                    //White Rook
+                    else if (row == 7 && column == 0 || row == 7 && column == 7)
+                    {
+                        chessBoard[column, row] = new Square(column, row, new Rook('W', column, row));
+                    }
+                    //Black Rook
+                    else if (row == 0 && column == 0 || row == 0 && column == 7)
+                    {
+                        chessBoard[column, row] = new Square(column, row, new Rook('B', column, row));
+                    }
+                    //White Bishop
+                    else if (row == 7 && column == 2 || row == 7 && column == 5)
+                    {
+                        chessBoard[column, row] = new Square(column, row, new Bishop('W', column, row));
+                    }
+                    //Black Bishop
+                    else if (row == 0 && column == 2 || row == 0 && column == 5)
+                    {
+                        chessBoard[column, row] = new Square(column, row, new Bishop('B', column, row));
+                    }
+                    //White Knight
+                    else if (row == 7 && column == 1 || row == 7 && column == 6)
+                    {
+                        chessBoard[column, row] = new Square(column, row, new Knight('W', column, row));
+                    }
+                    //Black Knight
+                    else if (row == 0 && column == 1 || row == 0 && column == 6)
+                    {
+                        chessBoard[column, row] = new Square(column, row, new Knight('B', column, row));
+                    }
+                    //Empty Square
+                    else
+                    {
+                        chessBoard[column, row] = new Square(column, row, null);
+                    }
                 }
             }
         }
@@ -77,13 +147,20 @@ namespace ChessGUI
                         //The +100 shifts the overall board down to (100,100) top left corner
                         Location = new Point(tileSize * column + 100, tileSize * row + 100),
 
-                        BackgroundImageLayout = ImageLayout.Center
+                        BackgroundImageLayout = ImageLayout.Center,
                     };
+
+                    newPanel.MouseDown += Square_MouseDown;
+
+                    newPanel.MouseUp += Square_MouseUp;
+
+                    //Event handler when a panel is hovered over. Only do something if the square is occupied
+                    newPanel.MouseHover += Square_Hover;
 
                     // Access the occupant of this square if there is one (can be null)
                     ChessPiece? occupant = chessBoard[column, row].getOccupant();
 
-                    if(occupant is Pawn && occupant.isWhite())
+                    if (occupant is Pawn)
                     {
                         if (occupant.isWhite())
                         {
@@ -94,57 +171,60 @@ namespace ChessGUI
                             newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackPawn.png");
                         }
                     }
-                    //TODO: below just prints the basic starting position of the game. However, this needs to shift to print whatever occupies the square at the location on the Square 2D board
-
-                    //Prints black pieces
-                    if(row == 1)
+                    else if (occupant is King)
                     {
-                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackPawn.png");
+                        if (occupant.isWhite())
+                        {
+                            newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteKing.png");
+                        }
+                        else
+                        {
+                            newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackKing.png");
+                        }
                     }
-                    else if (row == 0 && column == 0 || row == 0 && column == 7)
+                    else if (occupant is Queen)
                     {
-                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackRook.png");
+                        if (occupant.isWhite())
+                        {
+                            newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteQueen.png");
+                        }
+                        else
+                        {
+                            newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackQueen.png");
+                        }
                     }
-                    else if (row == 0 && column == 1 || row == 0 && column == 6)
+                    else if (occupant is Rook)
                     {
-                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackKnight.png");
+                        if (occupant.isWhite())
+                        {
+                            newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteRook.png");
+                        }
+                        else
+                        {
+                            newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackRook.png");
+                        }
                     }
-                    else if (row == 0 && column == 2 || row == 0 && column == 5)
+                    else if (occupant is Bishop)
                     {
-                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackBishop.png");
+                        if (occupant.isWhite())
+                        {
+                            newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteBishop.png");
+                        }
+                        else
+                        {
+                            newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackBishop.png");
+                        }
                     }
-                    else if (row == 0 && column == 4)
+                    else if (occupant is Knight)
                     {
-                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackQueen.png");
-                    }
-                    else if (row == 0 && column == 3)
-                    {
-                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackKing.png");
-                    }
-                    //Prints white pieces
-                    else if (row == 6)
-                    {
-                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhitePawn.png");
-                    }
-                    else if (row == 7 && column == 0 || row == 7 && column == 7)
-                    {
-                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteRook.png");
-                    }
-                    else if (row == 7 && column == 1 || row == 7 && column == 6)
-                    {
-                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteKnight.png");
-                    }
-                    else if (row == 7 && column == 2 || row == 7 && column == 5)
-                    {
-                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteBishop.png");
-                    }
-                    else if (row == 7 && column == 3)
-                    {
-                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteKing.png");
-                    }
-                    else if (row == 7 && column == 4)
-                    {
-                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteQueen.png");
+                        if (occupant.isWhite())
+                        {
+                            newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteKnight.png");
+                        }
+                        else
+                        {
+                            newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackKnight.png");
+                        }
                     }
 
                     // add to our 2d array of panels for future use
@@ -163,6 +243,42 @@ namespace ChessGUI
                         newPanel.BackColor = row % 2 != 0 ? clr2 : clr1;
                     }
                 }
+            }
+        }
+
+        private void Square_MouseUp(object? sender, MouseEventArgs e)
+        {
+            Panel p = (Panel)sender;
+
+            //Square newLocation = chessBoard[p.Location.X / 60 - 1, p.Location.Y / 60 - 1];
+
+            //Square newLocation = chessBoard[e.X / 60 - 1, e.Y / 60 - 1];
+
+
+            //chessBoard[newLocation.Row, newLocation.Col].occupant = currSquareClicked.occupant;
+
+            //chessBoard[currSquareClicked.Row, currSquareClicked.Col].occupant = null;
+
+            //Debug.WriteLine($"{newLocation.Row} : {newLocation.Col} : {newLocation.occupant}");
+
+            Debug.WriteLine($"{e.X} : {e.Y}");
+        }
+
+        private void Square_MouseDown(object? sender, MouseEventArgs e)
+        {
+            Panel p = (Panel)sender;
+            currSquareClicked = chessBoard[p.Location.X / 60 - 1, p.Location.Y / 60 - 1];
+
+            Debug.WriteLine($"{currSquareClicked.Row} : {currSquareClicked.Col} : {currSquareClicked.occupant}");
+        }
+
+        private void Square_Hover(object? sender, EventArgs e)
+        {
+            Panel p = (Panel)sender;
+            Square squareClicked = chessBoard[p.Location.X / 60 - 1, p.Location.Y / 60 - 1];
+            if (squareClicked.IsOccupiecd())
+            {
+                p.Cursor = Cursors.Hand;
             }
         }
     }
