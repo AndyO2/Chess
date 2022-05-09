@@ -2,24 +2,30 @@ using Chess;
 
 namespace ChessGUI
 {
-    public partial class ChessGUI : Form
+    public partial class Chess : Form
     {
         /// <summary>
-        /// Store the chess board
+        /// The chess board
         /// </summary>
-        private ChessBoard board;
+        private Square[,] chessBoard;
+
+        // class member array of Panels to track chessboard tiles
+        private Panel[,] chessBoardPanels;
 
         /// <summary>
         /// Indicates whose turn it is
         /// </summary>
         private bool whiteTurn;
 
-        // class member array of Panels to track chessboard tiles
-        private Panel[,] chessBoardPanels;
-
-        public ChessGUI()
+        public Chess()
         {
-            board = new ChessBoard(8);
+            //The chess board contains the status of the game
+            chessBoard = new Square[8, 8];
+            CreateBoard(8);
+
+            //The panels portrays the chessBoard onto the gui using panels
+            chessBoardPanels = new Panel[8, 8];
+
             whiteTurn = true;
 
             DoubleBuffered = true;
@@ -27,6 +33,21 @@ namespace ChessGUI
             this.Paint += Draw_Board;
 
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Helper method that creates the chessBoard
+        /// </summary>
+        /// <param name="boardSize"></param>
+        private void CreateBoard(int boardSize)
+        {
+            for (int i = 0; i < boardSize; i++)
+            {
+                for (int j = 0; j < boardSize; j++)
+                {
+                    chessBoard[i, j] = new Square(i, j, null);
+                }
+            }
         }
 
         /// <summary>
@@ -58,6 +79,8 @@ namespace ChessGUI
 
                         BackgroundImageLayout = ImageLayout.Center
                     };
+
+                    //TODO: below just prints the basic starting position of the game. However, this needs to shift to print whatever occupies the square at the location on the Square 2D board
 
                     //Prints black pieces
                     if(row == 1)

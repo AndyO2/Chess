@@ -1,6 +1,6 @@
 ﻿namespace ChessGUI
 {
-    partial class ChessGUI
+    partial class Chess
     {
         /// <summary>
         ///  Required designer variable.

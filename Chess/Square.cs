@@ -15,7 +15,7 @@
         /// <summary>
         /// The piece currently at this square
         /// </summary>
-        public ChessPiece occupant;
+        public ChessPiece? occupant;
 
         /// <summary>
         /// Square constructor
