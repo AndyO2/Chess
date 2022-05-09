@@ -16,7 +16,6 @@ namespace Chess
         /// <param name="column"></param>
         public Pawn(char color, int row, int column) : base(color, row, column)
         {
-
         }
          
         /// <summary>

@@ -80,6 +80,20 @@ namespace ChessGUI
                         BackgroundImageLayout = ImageLayout.Center
                     };
 
+                    // Access the occupant of this square if there is one (can be null)
+                    ChessPiece? occupant = chessBoard[column, row].getOccupant();
+
+                    if(occupant is Pawn && occupant.isWhite())
+                    {
+                        if (occupant.isWhite())
+                        {
+                            newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhitePawn.png");
+                        }
+                        else
+                        {
+                            newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackPawn.png");
+                        }
+                    }
                     //TODO: below just prints the basic starting position of the game. However, this needs to shift to print whatever occupies the square at the location on the Square 2D board
 
                     //Prints black pieces

@@ -39,6 +39,15 @@
         }
 
         /// <summary>
+        /// Returns the occupant on this square
+        /// </summary>
+        /// <returns></returns>
+        public ChessPiece? getOccupant()
+        {
+            return occupant;
+        }
+
+        /// <summary>
         /// Determines if this square is currently occupied
         /// </summary>
         /// <returns></returns>
