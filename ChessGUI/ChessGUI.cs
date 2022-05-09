@@ -9,6 +9,9 @@ namespace ChessGUI
         /// </summary>
         private ChessBoard board;
 
+        // class member array of Panels to track chessboard tiles
+        private Panel[,] chessBoardPanels;
+
         public ChessGUI()
         {
             board = new ChessBoard(8);
@@ -20,9 +23,6 @@ namespace ChessGUI
             InitializeComponent();
         }
 
-        // class member array of Panels to track chessboard tiles
-        private Panel[,] _chessBoardPanels;
-
         private void Draw_Board(object? sender, PaintEventArgs e)
         {
             const int tileSize = 60;
@@ -31,32 +31,41 @@ namespace ChessGUI
             var clr2 = Color.White;
 
             // initialize the "chess board"
-            _chessBoardPanels = new Panel[gridSize, gridSize];
+            chessBoardPanels = new Panel[gridSize, gridSize];
 
             // double for loop to handle all rows and columns
-            for (var n = 0; n < gridSize; n++)
+            for (var row = 0; row < gridSize; row++)
             {
-                for (var m = 0; m < gridSize; m++)
+                for (var column = 0; column < gridSize; column++)
                 {
                     // create new Panel control which will be one chess board tile
                     var newPanel = new Panel
                     {
                         Size = new Size(tileSize, tileSize),
                         //The +100 shifts the overall board down to (100,100) top left corner
-                        Location = new Point(tileSize * n + 100, tileSize * m + 100)
+                        Location = new Point(tileSize * row + 100, tileSize * column + 100),
                     };
 
-                    // add to our 2d array of panels for future use
-                    _chessBoardPanels[n, m] = newPanel;
+                    Image newImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteKing.png");
+                    
+                    //newPanel.BackgroundImage = newImage;
+                    //newImage.Dispose();
 
-                    // color the backgrounds
-                    if (n % 2 == 0)
-                        newPanel.BackColor = m % 2 != 0 ? clr1 : clr2;
-                    else
-                        newPanel.BackColor = m % 2 != 0 ? clr2 : clr1;
+                    // add to our 2d array of panels for future use
+                    chessBoardPanels[row, column] = newPanel;
 
                     // add to Form's Controls so that they show up
                     Controls.Add(newPanel);
+
+                    // color the backgrounds
+                    if (row % 2 == 0)
+                    {
+                        newPanel.BackColor = column % 2 != 0 ? clr1 : clr2;
+                    }
+                    else
+                    {
+                        newPanel.BackColor = column % 2 != 0 ? clr2 : clr1;
+                    }
                 }
             }
         }
