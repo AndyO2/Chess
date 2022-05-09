@@ -50,11 +50,53 @@ namespace ChessGUI
 
                     if(row == 1)
                     {
-                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhitePawn.png");
+                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackPawn.png");
                     }
+                    else if (row == 0 && column == 0 || row == 0 && column == 7)
+                    {
+                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackRook.png");
+                    }
+                    else if (row == 0 && column == 1 || row == 0 && column == 6)
+                    {
+                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackKnight.png");
+                    }
+                    else if (row == 0 && column == 2 || row == 0 && column == 5)
+                    {
+                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackBishop.png");
+                    }
+                    else if (row == 0 && column == 4)
+                    {
+                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackQueen.png");
+                    }
+                    else if (row == 0 && column == 3)
+                    {
+                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackKing.png");
+                    }
+
+
                     else if (row == 6)
                     {
-                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackPawn.png");
+                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhitePawn.png");
+                    }
+                    else if (row == 7 && column == 0 || row == 7 && column == 7)
+                    {
+                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteRook.png");
+                    }
+                    else if (row == 7 && column == 1 || row == 7 && column == 6)
+                    {
+                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteKnight.png");
+                    }
+                    else if (row == 7 && column == 2 || row == 7 && column == 5)
+                    {
+                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteBishop.png");
+                    }
+                    else if (row == 7 && column == 3)
+                    {
+                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteKing.png");
+                    }
+                    else if (row == 7 && column == 4)
+                    {
+                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteQueen.png");
                     }
 
                     // add to our 2d array of panels for future use
