@@ -14,11 +14,6 @@ namespace Chess
         public char Color { get; set; }
 
         /// <summary>
-        /// The square that this piece is on
-        /// </summary>
-        public Square location;
-
-        /// <summary>
         /// Each piece has its own definition of a legal move so those pieces must implement this
         /// </summary>
         /// <param name="requestedRow">The row we want to move to</param>
@@ -35,8 +30,7 @@ namespace Chess
         {
             if(MoveIsLegal(requestedRow, requestedColumn))
             {
-                location.Row = requestedRow;
-                location.Col = requestedColumn;
+
             }
         }
 
@@ -49,7 +43,7 @@ namespace Chess
         public ChessPiece(char color, int row, int column)
         {
             Color = color;
-            location = new Square(row, column);
+
         }
     }
 }

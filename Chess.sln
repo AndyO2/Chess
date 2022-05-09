@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessGUI", "ChessGUI\ChessG
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessPiece", "ChessPiece\ChessPiece.csproj", "{F30899AA-1B80-419C-B10C-7577CF156867}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess", "Chess\Chess.csproj", "{43E3F6BE-E6E3-48B5-9C4B-E5E826FC7984}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessBoard", "Chess\ChessBoard.csproj", "{43E3F6BE-E6E3-48B5-9C4B-E5E826FC7984}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

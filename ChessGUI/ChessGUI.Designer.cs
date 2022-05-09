@@ -28,25 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
             this.SuspendLayout();
-            // 
-            // panel1
-            // 
-            this.panel1.Location = new System.Drawing.Point(28, 29);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(500, 500);
-            this.panel1.TabIndex = 0;
             // 
             // ChessGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 661);
-            this.Controls.Add(this.panel1);
             this.Name = "ChessGUI";
-            this.Text = "Form1";
-            this.Load += new System.EventHandler(this.ChessGUI_Load);
+            this.Text = "Chess";
             this.ResumeLayout(false);
 
         }
