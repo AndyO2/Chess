@@ -34,37 +34,43 @@ namespace ChessGUI
             chessBoardPanels = new Panel[gridSize, gridSize];
 
             // double for loop to handle all rows and columns
-            for (var row = 0; row < gridSize; row++)
+            for (var column = 0; column < gridSize; column++)
             {
-                for (var column = 0; column < gridSize; column++)
+                for (var row = 0; row < gridSize; row++)
                 {
                     // create new Panel control which will be one chess board tile
                     var newPanel = new Panel
                     {
                         Size = new Size(tileSize, tileSize),
                         //The +100 shifts the overall board down to (100,100) top left corner
-                        Location = new Point(tileSize * row + 100, tileSize * column + 100),
+                        Location = new Point(tileSize * column + 100, tileSize * row + 100),
+
+                        BackgroundImageLayout = ImageLayout.Center
                     };
 
-                    Image newImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteKing.png");
-                    
-                    //newPanel.BackgroundImage = newImage;
-                    //newImage.Dispose();
+                    if(row == 1)
+                    {
+                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhitePawn.png");
+                    }
+                    else if (row == 6)
+                    {
+                        newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackPawn.png");
+                    }
 
                     // add to our 2d array of panels for future use
-                    chessBoardPanels[row, column] = newPanel;
+                    chessBoardPanels[column, row] = newPanel;
 
                     // add to Form's Controls so that they show up
                     Controls.Add(newPanel);
 
                     // color the backgrounds
-                    if (row % 2 == 0)
+                    if (column % 2 == 0)
                     {
-                        newPanel.BackColor = column % 2 != 0 ? clr1 : clr2;
+                        newPanel.BackColor = row % 2 != 0 ? clr1 : clr2;
                     }
                     else
                     {
-                        newPanel.BackColor = column % 2 != 0 ? clr2 : clr1;
+                        newPanel.BackColor = row % 2 != 0 ? clr2 : clr1;
                     }
                 }
             }
