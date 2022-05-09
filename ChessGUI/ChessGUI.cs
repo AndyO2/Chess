@@ -9,12 +9,18 @@ namespace ChessGUI
         /// </summary>
         private ChessBoard board;
 
+        /// <summary>
+        /// Indicates whose turn it is
+        /// </summary>
+        private bool whiteTurn;
+
         // class member array of Panels to track chessboard tiles
         private Panel[,] chessBoardPanels;
 
         public ChessGUI()
         {
             board = new ChessBoard(8);
+            whiteTurn = true;
 
             DoubleBuffered = true;
 
@@ -23,11 +29,16 @@ namespace ChessGUI
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Draws the status of the board
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Draw_Board(object? sender, PaintEventArgs e)
         {
             const int tileSize = 60;
             const int gridSize = 8;
-            var clr1 = Color.DarkGray;
+            var clr1 = Color.BurlyWood;
             var clr2 = Color.White;
 
             // initialize the "chess board"
@@ -48,6 +59,7 @@ namespace ChessGUI
                         BackgroundImageLayout = ImageLayout.Center
                     };
 
+                    //Prints black pieces
                     if(row == 1)
                     {
                         newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackPawn.png");
@@ -72,8 +84,7 @@ namespace ChessGUI
                     {
                         newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\BlackKing.png");
                     }
-
-
+                    //Prints white pieces
                     else if (row == 6)
                     {
                         newPanel.BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhitePawn.png");
