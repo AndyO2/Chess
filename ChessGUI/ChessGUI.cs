@@ -262,8 +262,11 @@ namespace ChessGUI
         /// <summary>
         /// Helper method that handles piece moving as well as valid/invalid moves
         /// </summary>
-        private void MakeMove(bool whiteTurn)
+        private void MakeMove(bool whiteTurn, int requestedColumn, int requestedRow)
         {
+            int currentX = currSquareClicked.Row;
+            int currentY = currSquareClicked.Col;
+
             if (whiteTurn)
             {
 
@@ -286,14 +289,14 @@ namespace ChessGUI
             if (currSquareClicked is null)
             {
                 currSquareClicked = chessBoard[p.Location.X / 60 - 1, p.Location.Y / 60 - 1];
-                currSquareClicked.Row = p.Location.X / 60 - 1;
-                currSquareClicked.Col = p.Location.Y / 60 - 1;
+                currSquareClicked.Col = p.Location.X / 60 - 1;
+                currSquareClicked.Row = p.Location.Y / 60 - 1;
             }
             else
             {
                 chessBoard[p.Location.X / 60 - 1, p.Location.Y / 60 - 1].occupant = currSquareClicked.occupant;
 
-                chessBoard[currSquareClicked.Row,currSquareClicked.Col].occupant = null;
+                chessBoard[currSquareClicked.Col,currSquareClicked.Row].occupant = null;
 
                 currSquareClicked = null;
             }
