@@ -21,7 +21,7 @@ namespace ChessGUI
         /// <summary>
         /// Keeps track of the current square the user has clicked and wants to move if possible
         /// </summary>
-        private Square currSquareClicked;
+        private Square? currSquareClicked;
 
         public Chess()
         {
@@ -34,9 +34,13 @@ namespace ChessGUI
 
             whiteTurn = true;
 
+            this.Paint += Draw_Board;
             DoubleBuffered = true;
 
-            this.Paint += Draw_Board;
+            var timer = new System.Windows.Forms.Timer();
+            timer.Interval = 1000 / 30;  // 1000 milliseconds in a second divided by 30 frames per second
+            timer.Tick += (a, b) => this.Invalidate();
+            timer.Start();
 
             InitializeComponent();
         }
@@ -47,6 +51,8 @@ namespace ChessGUI
         /// <param name="boardSize"></param>
         private void CreateBoard(int boardSize)
         {
+            Debug.WriteLine("Create Board called");
+
             for (int column = 0; column < boardSize; column++)
             {
                 for (int row = 0; row < boardSize; row++)
@@ -127,13 +133,12 @@ namespace ChessGUI
         /// <param name="e"></param>
         private void Draw_Board(object? sender, PaintEventArgs e)
         {
+            //Debug.WriteLine("Draw board called");
+
             const int tileSize = 60;
             const int gridSize = 8;
-            var clr1 = Color.BurlyWood;
+            var clr1 = Color.RebeccaPurple;
             var clr2 = Color.White;
-
-            // initialize the "chess board"
-            chessBoardPanels = new Panel[gridSize, gridSize];
 
             // double for loop to handle all rows and columns
             for (var column = 0; column < gridSize; column++)
@@ -150,9 +155,7 @@ namespace ChessGUI
                         BackgroundImageLayout = ImageLayout.Center,
                     };
 
-                    newPanel.MouseDown += Square_MouseDown;
-
-                    newPanel.MouseUp += Square_MouseUp;
+                    newPanel.Click += Square_Click;
 
                     //Event handler when a panel is hovered over. Only do something if the square is occupied
                     newPanel.MouseHover += Square_Hover;
@@ -246,30 +249,37 @@ namespace ChessGUI
             }
         }
 
-        private void Square_MouseUp(object? sender, MouseEventArgs e)
+        private void Square_Click(object? sender, EventArgs e)
         {
+            chessBoard[2, 4].occupant = new King('W', 2, 4);
+
+            Debug.WriteLine($"{chessBoard[2, 4].occupant}");
+            Debug.WriteLine($"{chessBoard[3, 4].occupant}");
+
+
+
             Panel p = (Panel)sender;
+            Debug.WriteLine($"{p.Location.X / 60 - 1} - {p.Location.Y / 60 - 1}");
 
-            //Square newLocation = chessBoard[p.Location.X / 60 - 1, p.Location.Y / 60 - 1];
+            //if (currSquareClicked is null)
+            //{
+            //    //currSquareClicked = chessBoard[p.Location.X / 60 - 1, p.Location.Y / 60 - 1];
+            //    currSquareClicked = chessBoard[p.Location.Y / 60 - 1, p.Location.X / 60 - 1];
 
-            //Square newLocation = chessBoard[e.X / 60 - 1, e.Y / 60 - 1];
+            //    Debug.WriteLine($"{p.Location.X / 60 - 1} - {p.Location.Y / 60 - 1}");
+            //}
+            //else
+            //{
+            //    //chessBoard[p.Location.X / 60 - 1, p.Location.Y / 60 - 1].occupant = currSquareClicked.occupant;
+            //    chessBoard[2, 4].occupant = new Pawn('W', 2 ,4);
 
+            //    Debug.WriteLine($"{p.Location.X / 60 - 1} - {p.Location.Y / 60 - 1}");
 
-            //chessBoard[newLocation.Row, newLocation.Col].occupant = currSquareClicked.occupant;
+            //    //currSquareClicked.occupant = null;
+            //    currSquareClicked = null;
 
-            //chessBoard[currSquareClicked.Row, currSquareClicked.Col].occupant = null;
-
-            //Debug.WriteLine($"{newLocation.Row} : {newLocation.Col} : {newLocation.occupant}");
-
-            Debug.WriteLine($"{e.X} : {e.Y}");
-        }
-
-        private void Square_MouseDown(object? sender, MouseEventArgs e)
-        {
-            Panel p = (Panel)sender;
-            currSquareClicked = chessBoard[p.Location.X / 60 - 1, p.Location.Y / 60 - 1];
-
-            Debug.WriteLine($"{currSquareClicked.Row} : {currSquareClicked.Col} : {currSquareClicked.occupant}");
+            //    //Debug.WriteLine($"{currSquareClicked.Row} - {currSquareClicked.Col}");
+            //}
         }
 
         private void Square_Hover(object? sender, EventArgs e)
