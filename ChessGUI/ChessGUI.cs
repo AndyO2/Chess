@@ -23,9 +23,24 @@ namespace ChessGUI
         /// </summary>
         private Square? currSquareClicked;
 
+        /// <summary>
+        /// The size of the tile
+        /// </summary>
         private const int tileSize = 60;
+
+        /// <summary>
+        /// The number of tiles we want
+        /// </summary>
         private const int gridSize = 8;
-        private Color clr1 = Color.RebeccaPurple;
+
+        /// <summary>
+        /// Dark color on chess board
+        /// </summary>
+        private Color clr1 = Color.BurlyWood;
+
+        /// <summary>
+        /// Light color on board
+        /// </summary>
         private Color clr2 = Color.White;
 
         public Chess()
@@ -283,6 +298,10 @@ namespace ChessGUI
             if (squareClicked.IsOccupiecd())
             {
                 p.Cursor = Cursors.Hand;
+            }
+            else
+            {
+                p.Cursor = Cursors.No;
             }
         }
     }
