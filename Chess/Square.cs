@@ -42,7 +42,7 @@
         /// Returns the occupant on this square
         /// </summary>
         /// <returns></returns>
-        public ChessPiece? getOccupant()
+        public ChessPiece? GetOccupant()
         {
             return occupant;
         }
@@ -51,17 +51,17 @@
         /// Determines if this square is currently occupied
         /// </summary>
         /// <returns></returns>
-        public bool IsOccupiecd()
+        public bool IsOccupied()
         {
             return occupant != null;
         }
 
-        public bool isOccupiedByBlack()
+        public bool IsOccupiedByBlack()
         {
             return occupant is not null && occupant.Color == 'B';
         }
 
-        public bool isOccupiedByWhite()
+        public bool IsOccupiedByWhite()
         {
             return occupant is not null && occupant.Color == 'W';
         }

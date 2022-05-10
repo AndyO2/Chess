@@ -183,7 +183,7 @@ namespace ChessGUI
                 for (var row = 0; row < gridSize; row++)
                 {
                     // Access the occupant of this square if there is one (can be null)
-                    ChessPiece? occupant = chessBoard[column, row].getOccupant();
+                    ChessPiece? occupant = chessBoard[column, row].GetOccupant();
 
                     if (occupant is Pawn)
                     {
@@ -260,6 +260,21 @@ namespace ChessGUI
         }
 
         /// <summary>
+        /// Helper method that handles piece moving as well as valid/invalid moves
+        /// </summary>
+        private void MakeMove(bool whiteTurn)
+        {
+            if (whiteTurn)
+            {
+
+            }
+            else
+            {
+
+            }
+        }
+
+        /// <summary>
         /// Event handler when a square is clicked
         /// </summary>
         /// <param name="sender"></param>
@@ -295,7 +310,7 @@ namespace ChessGUI
         {
             Panel p = (Panel)sender;
             Square squareClicked = chessBoard[p.Location.X / 60 - 1, p.Location.Y / 60 - 1];
-            if (squareClicked.IsOccupiecd())
+            if (squareClicked.IsOccupied())
             {
                 p.Cursor = Cursors.Hand;
             }
