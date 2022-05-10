@@ -32,10 +32,10 @@ namespace ChessGUI
         {
             //The chess board contains the status of the game
             chessBoard = new Square[8, 8];
-            CreateBoard(8);
-
             //The panels portrays the chessBoard onto the gui using panels
             chessBoardPanels = new Panel[8, 8];
+
+            CreateBoard(8);
 
             whiteTurn = true;
 
