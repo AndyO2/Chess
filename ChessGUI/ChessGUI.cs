@@ -23,6 +23,11 @@ namespace ChessGUI
         /// </summary>
         private Square? currSquareClicked;
 
+        private const int tileSize = 60;
+        private const int gridSize = 8;
+        private Color clr1 = Color.RebeccaPurple;
+        private Color clr2 = Color.White;
+
         public Chess()
         {
             //The chess board contains the status of the game
@@ -51,8 +56,6 @@ namespace ChessGUI
         /// <param name="boardSize"></param>
         private void CreateBoard(int boardSize)
         {
-            Debug.WriteLine("Create Board called");
-
             for (int column = 0; column < boardSize; column++)
             {
                 for (int row = 0; row < boardSize; row++)
@@ -133,13 +136,6 @@ namespace ChessGUI
         /// <param name="e"></param>
         private void Draw_Board(object? sender, PaintEventArgs e)
         {
-            //Debug.WriteLine("Draw board called");
-
-            const int tileSize = 60;
-            const int gridSize = 8;
-            var clr1 = Color.RebeccaPurple;
-            var clr2 = Color.White;
-
             // double for loop to handle all rows and columns
             for (var column = 0; column < gridSize; column++)
             {
