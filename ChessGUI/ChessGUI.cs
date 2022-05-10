@@ -244,6 +244,11 @@ namespace ChessGUI
             }
         }
 
+        /// <summary>
+        /// Event handler when a square is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Square_Click(object? sender, EventArgs e)
         {
             Panel p = (Panel)sender;
@@ -266,6 +271,11 @@ namespace ChessGUI
             this.Invalidate();
         }
 
+        /// <summary>
+        /// Event handler when the user hovers over a square
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Square_Hover(object? sender, EventArgs e)
         {
             Panel p = (Panel)sender;
