@@ -285,10 +285,11 @@ namespace ChessGUI
         private void Square_Click(object? sender, EventArgs e)
         {
             Panel p = (Panel)sender;
+            Square squareClicked = chessBoard[p.Location.X / 60 - 1, p.Location.Y / 60 - 1];
 
             if (currSquareClicked is null)
             {
-                currSquareClicked = chessBoard[p.Location.X / 60 - 1, p.Location.Y / 60 - 1];
+                currSquareClicked = squareClicked;
                 currSquareClicked.Col = p.Location.X / 60 - 1;
                 currSquareClicked.Row = p.Location.Y / 60 - 1;
             }
