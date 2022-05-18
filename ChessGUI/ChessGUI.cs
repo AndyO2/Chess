@@ -262,19 +262,110 @@ namespace ChessGUI
         /// <summary>
         /// Helper method that handles piece moving as well as valid/invalid moves
         /// </summary>
-        private void MakeMove(bool whiteTurn, int requestedColumn, int requestedRow)
+        private void MovePiece(int requestedColumn, int requestedRow)
         {
-            int currentX = currSquareClicked.Row;
-            int currentY = currSquareClicked.Col;
+            ChessPiece? pieceToMove = currSquareClicked.GetOccupant();
 
-            if (whiteTurn)
+            if(MoveIsLegal(pieceToMove, requestedColumn, requestedRow))
             {
+                chessBoard[requestedColumn, requestedRow].occupant = currSquareClicked.occupant;
 
+                chessBoard[currSquareClicked.Col, currSquareClicked.Row].occupant = null;
+
+                currSquareClicked = null;
+
+                if (whiteTurn)
+                {
+                    whiteTurn = false;
+                }
+                else
+                {
+                    whiteTurn = true;
+                }
             }
-            else
+        }
+
+        /// <summary>
+        /// Helper method that determines if a move is legal
+        /// </summary>
+        /// <param name="piece"></param>
+        /// <param name="requestedColumn"></param>
+        /// <param name="requestedRow"></param>
+        /// <returns></returns>
+        private bool MoveIsLegal(ChessPiece piece, int requestedColumn, int requestedRow)
+        {
+            if(piece is Pawn)
             {
+                if (piece.isWhite())
+                {
+                    if (chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite())
+                    {
+                        return false;
+                    }
 
+                }
+                else
+                {
+
+                }
             }
+            else if(piece is Knight)
+            {
+                if (piece.isWhite())
+                {
+
+                }
+                else
+                {
+
+                }
+            }
+            else if (piece is Bishop)
+            {
+                if (piece.isWhite())
+                {
+
+                }
+                else
+                {
+
+                }
+            }
+            else if (piece is Rook)
+            {
+                if (piece.isWhite())
+                {
+
+                }
+                else
+                {
+
+                }
+            }
+            else if (piece is King)
+            {
+                if (piece.isWhite())
+                {
+
+                }
+                else
+                {
+
+                }
+            }
+            else if (piece is Queen)
+            {
+                if (piece.isWhite())
+                {
+
+                }
+                else
+                {
+
+                }
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -285,21 +376,60 @@ namespace ChessGUI
         private void Square_Click(object? sender, EventArgs e)
         {
             Panel p = (Panel)sender;
-            Square squareClicked = chessBoard[p.Location.X / 60 - 1, p.Location.Y / 60 - 1];
 
+            int squareColumn = p.Location.X / 60 - 1;
+            int squareRow = p.Location.Y / 60 - 1;
+
+            Square squareClicked = chessBoard[squareColumn, squareRow];
+            
+            //SELECTING PHASE: this is where a piece to move is not selected yet
             if (currSquareClicked is null)
             {
-                currSquareClicked = squareClicked;
-                currSquareClicked.Col = p.Location.X / 60 - 1;
-                currSquareClicked.Row = p.Location.Y / 60 - 1;
+                //Only set the current square clicked if it is a valid piece that can be moved (depending on whose turn)
+                if (squareClicked.IsOccupiedByWhite() && whiteTurn)
+                {
+                    currSquareClicked = squareClicked;
+                    currSquareClicked.Col = p.Location.X / 60 - 1;
+                    currSquareClicked.Row = p.Location.Y / 60 - 1;
+                }
+                //Only set the current square clicked if it is a valid piece that can be moved (depending on whose turn)
+                else if (squareClicked.IsOccupiedByBlack() && !whiteTurn)
+                {
+                    currSquareClicked = squareClicked;
+                    currSquareClicked.Col = p.Location.X / 60 - 1;
+                    currSquareClicked.Row = p.Location.Y / 60 - 1;
+                }
+                //If a square that is not occupied is selected, tell user to select an occupied square
+                else if (!squareClicked.IsOccupied())
+                {
+                    Debug.WriteLine("Select a piece");
+                }
+                else
+                {
+                    Debug.WriteLine("It is not your turn");
+                }
             }
+            //MOVING PHASE: where a current piece is selected. The only possible moves is if now the user clicks on an empty square or on a square containing opposite color piece
             else
             {
-                chessBoard[p.Location.X / 60 - 1, p.Location.Y / 60 - 1].occupant = currSquareClicked.occupant;
-
-                chessBoard[currSquareClicked.Col,currSquareClicked.Row].occupant = null;
-
-                currSquareClicked = null;
+                //RESELECTING PIECE: if the user already clicked its own colored piece and clicks on another square with its own colored piece, change the currently selected piece to this new one
+                if(currSquareClicked.IsOccupiedByWhite() && squareClicked.IsOccupiedByWhite())
+                {
+                    currSquareClicked = squareClicked;
+                    currSquareClicked.Col = p.Location.X / 60 - 1;
+                    currSquareClicked.Row = p.Location.Y / 60 - 1;
+                }
+                else if (currSquareClicked.IsOccupiedByBlack() && squareClicked.IsOccupiedByBlack())
+                {
+                    currSquareClicked = squareClicked;
+                    currSquareClicked.Col = p.Location.X / 60 - 1;
+                    currSquareClicked.Row = p.Location.Y / 60 - 1;
+                }
+                //MOVE PHASE:
+                else
+                {
+                    MovePiece(squareColumn, squareRow);
+                }
             }
 
             this.Invalidate();
