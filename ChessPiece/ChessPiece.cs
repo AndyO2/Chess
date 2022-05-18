@@ -25,7 +25,7 @@ namespace Chess
         /// <param name="requestedRow">The row we want to move to</param>
         /// <param name="requestedColumn">The column we want to move to</param>
         /// <returns></returns>
-        public abstract bool MoveIsLegal(int requestedRow, int requestedColumn);
+        public abstract bool MoveIsLegal(int requestedColumn, int requestedRow);
 
         /// <summary>
         /// Tells if this piece is black
@@ -44,18 +44,6 @@ namespace Chess
         {
             return Color == 'W';
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="requestedRow"></param>
-        /// <param name="requestedColumn"></param>
-        public void Move(int requestedRow, int requestedColumn)
-        {
-            if(MoveIsLegal(requestedRow, requestedColumn))
-            {
-
-            }
-        }
 
         /// <summary>
         /// ChessPiece constructor that gives a color, and location
@@ -63,10 +51,10 @@ namespace Chess
         /// <param name="color"></param>
         /// <param name="row"></param>
         /// <param name="column"></param>
-        public ChessPiece(char color, int row, int column)
+        public ChessPiece(char color, int column, int row)
         {
             Color = color;
-            Location = new Point(row, column);
+            Location = new Point(column, row);
         }
     }
 }

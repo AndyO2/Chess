@@ -264,11 +264,15 @@ namespace ChessGUI
         /// </summary>
         private void MovePiece(int requestedColumn, int requestedRow)
         {
-            ChessPiece? pieceToMove = currSquareClicked.GetOccupant();
+            ChessPiece pieceToMove = currSquareClicked.GetOccupant();
 
-            if(MoveIsLegal(pieceToMove, requestedColumn, requestedRow))
+            if(MoveIsLegal(requestedColumn, requestedRow))
             {
+                //Update the location of the piece on the chess board
                 chessBoard[requestedColumn, requestedRow].occupant = currSquareClicked.occupant;
+
+                //Update the piece's location
+                chessBoard[requestedColumn, requestedRow].occupant.Location = new Point(requestedColumn,requestedRow);
 
                 chessBoard[currSquareClicked.Col, currSquareClicked.Row].occupant = null;
 
@@ -283,6 +287,10 @@ namespace ChessGUI
                     whiteTurn = true;
                 }
             }
+            else
+            {
+                Debug.WriteLine("Invalid Move");
+            }
         }
 
         /// <summary>
@@ -292,21 +300,87 @@ namespace ChessGUI
         /// <param name="requestedColumn"></param>
         /// <param name="requestedRow"></param>
         /// <returns></returns>
-        private bool MoveIsLegal(ChessPiece piece, int requestedColumn, int requestedRow)
+        private bool MoveIsLegal(int requestedColumn, int requestedRow)
         {
+            ChessPiece piece = currSquareClicked.GetOccupant();
+
             if(piece is Pawn)
             {
                 if (piece.isWhite())
                 {
+                    //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
                     if (chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite())
                     {
                         return false;
                     }
 
+                    //CANNOT MOVE BACKWARDS
+                    if(requestedRow > piece.Location.Y)
+                    {
+                        return false;
+                    }
+
+                    //FIRST MOVE
+                    if (piece.Location.Y == 6)
+                    {
+                        if (Math.Abs(requestedRow - piece.Location.Y) <= 2 && requestedColumn - piece.Location.X == 0)
+                        {
+                            return true;
+                        } 
+                    }
+
+                    //REGULAR MOVE FORWARD
+                    if(Math.Abs(requestedRow - piece.Location.Y) == 1 && requestedColumn - piece.Location.X == 0)
+                    {
+                        return true;
+                    }
+
+                    //TAKE PIECE DIAGONAL
+                    if(chessBoard[requestedColumn, requestedRow].IsOccupiedByBlack())
+                    {
+                        if(Math.Abs(requestedColumn - piece.Location.X) == 1 && Math.Abs(requestedRow - piece.Location.Y) == 1)
+                        {
+                            return true;
+                        }
+                    }
                 }
                 else
                 {
+                    //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
+                    if (chessBoard[requestedColumn, requestedRow].IsOccupiedByBlack())
+                    {
+                        return false;
+                    }
 
+                    //CANNOT MOVE BACKWARDS
+                    if (requestedRow < piece.Location.Y)
+                    {
+                        return false;
+                    }
+
+                    //FIRST MOVE DOUBLE SPACE
+                    if (piece.Location.Y == 1)
+                    {
+                        if (Math.Abs(requestedRow - piece.Location.Y) <= 2 && requestedColumn - piece.Location.X == 0)
+                        {
+                            return true;
+                        }
+                    }
+
+                    //REGULAR MOVE FORWARD
+                    if (Math.Abs(requestedRow - piece.Location.Y) == 1 && requestedColumn - piece.Location.X == 0)
+                    {
+                        return true;
+                    }
+
+                    //TAKE PIECE DIAGONAL
+                    if (chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite())
+                    {
+                        if (Math.Abs(requestedColumn - piece.Location.X) == 1 && Math.Abs(requestedRow - piece.Location.Y) == 1)
+                        {
+                            return true;
+                        }
+                    }
                 }
             }
             else if(piece is Knight)
@@ -365,7 +439,7 @@ namespace ChessGUI
                 }
             }
 
-            return true;
+            return false;
         }
 
         /// <summary>
