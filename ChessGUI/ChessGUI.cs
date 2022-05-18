@@ -387,11 +387,39 @@ namespace ChessGUI
             {
                 if (piece.isWhite())
                 {
+                    //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
+                    if (chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite())
+                    {
+                        return false;
+                    }
 
+                    //REGULAR L-Shaped Move
+                    if(Math.Abs(requestedColumn - piece.Location.X) == 2 && Math.Abs(requestedRow - piece.Location.Y) == 1)
+                    {
+                        return true;
+                    }
+                    else if (Math.Abs(requestedColumn - piece.Location.X) == 1 && Math.Abs(requestedRow - piece.Location.Y) == 2)
+                    {
+                        return true;
+                    }
                 }
                 else
                 {
+                    //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
+                    if (chessBoard[requestedColumn, requestedRow].IsOccupiedByBlack())
+                    {
+                        return false;
+                    }
 
+                    //REGULAR L-Shaped Move
+                    if (Math.Abs(requestedColumn - piece.Location.X) == 2 && Math.Abs(requestedRow - piece.Location.Y) == 1)
+                    {
+                        return true;
+                    }
+                    else if (Math.Abs(requestedColumn - piece.Location.X) == 1 && Math.Abs(requestedRow - piece.Location.Y) == 2)
+                    {
+                        return true;
+                    }
                 }
             }
             else if (piece is Bishop)
