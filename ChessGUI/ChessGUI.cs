@@ -330,7 +330,7 @@ namespace ChessGUI
                     }
 
                     //REGULAR MOVE FORWARD
-                    if (Math.Abs(requestedRow - piece.Location.Y) == 1 && requestedColumn - piece.Location.X == 0)
+                    if (Math.Abs(requestedRow - piece.Location.Y) == 1 && requestedColumn - piece.Location.X == 0 && !chessBoard[requestedColumn, requestedRow].IsOccupied())
                     {
                         return true;
                     }
@@ -368,7 +368,7 @@ namespace ChessGUI
                     }
 
                     //REGULAR MOVE FORWARD
-                    if (Math.Abs(requestedRow - piece.Location.Y) == 1 && requestedColumn - piece.Location.X == 0)
+                    if (Math.Abs(requestedRow - piece.Location.Y) == 1 && requestedColumn - piece.Location.X == 0 && !chessBoard[requestedColumn, requestedRow].IsOccupied())
                     {
                         return true;
                     }
@@ -446,41 +446,41 @@ namespace ChessGUI
                         { { 1, -1}, { 2,-2}, { 3, -3}, { 4, -4}, { 5, -5}, {6,  -6}, {7, -7} } // bottom-right branch
                 };
 
-                int[] requested_offset = new int[2]; // offset of the requested square relative to the current square
-                int[] requested_square = new int[2]; // current square being checked for obstacles
+                int[] requestedOffset = new int[2]; // offset of the requested square relative to the current square
+                int[] requestedSquare = new int[2]; // current square being checked for obstacles
 
                 // get offset of requested square relative to current square
-                requested_offset[0] = requestedColumn - piece.Location.X;
-                requested_offset[1] = requestedRow - piece.Location.Y;
+                requestedOffset[0] = requestedColumn - piece.Location.X;
+                requestedOffset[1] = requestedRow - piece.Location.Y;
 
                 // check if offset is diagonal
-                if (Math.Abs(requested_offset[0]) != Math.Abs(requested_offset[1]))
+                if (Math.Abs(requestedOffset[0]) != Math.Abs(requestedOffset[1]))
                 {
                     return false;
                 }
 
                 // get the direction of the requested square relative to current location
-                if (requested_offset[0] < 0 && requested_offset[1] > 0) { direction = NORTH_WEST; }
-                if (requested_offset[0] > 0 && requested_offset[1] > 0) { direction = NORTH_EAST; }
-                if (requested_offset[0] < 0 && requested_offset[1] < 0) { direction = SOUTH_EAST; }
-                if (requested_offset[0] > 0 && requested_offset[1] < 0) { direction = SOUTH_WEST; }
+                if (requestedOffset[0] < 0 && requestedOffset[1] > 0) { direction = NORTH_WEST; }
+                if (requestedOffset[0] > 0 && requestedOffset[1] > 0) { direction = NORTH_EAST; }
+                if (requestedOffset[0] < 0 && requestedOffset[1] < 0) { direction = SOUTH_EAST; }
+                if (requestedOffset[0] > 0 && requestedOffset[1] < 0) { direction = SOUTH_WEST; }
 
                 // loop through all square between the current square and requested square
                 for (int i = 0; i < 8; i++)
                 {
 
                     // get location of a square in the path to the requested square
-                    requested_square[0] = piece.Location.X + legalOffsets[direction, i, 0];
-                    requested_square[1] = piece.Location.Y + legalOffsets[direction, i, 1];
+                    requestedSquare[0] = piece.Location.X + legalOffsets[direction, i, 0];
+                    requestedSquare[1] = piece.Location.Y + legalOffsets[direction, i, 1];
 
                     // check if current square being checked is the requested square; if so stop
-                    if (requested_square[0] == requestedColumn && requested_square[1] == requestedRow)
+                    if (requestedSquare[0] == requestedColumn && requestedSquare[1] == requestedRow)
                     {
                         return true;
                     }
 
                     // check if current square being checked is occupied; if so declare move illegal
-                    if (chessBoard[requested_square[0], requested_square[1]].IsOccupied())
+                    if (chessBoard[requestedSquare[0], requestedSquare[1]].IsOccupied())
                     {
                         return false;
                     }
@@ -488,18 +488,49 @@ namespace ChessGUI
             }
             else if (piece is Rook)
             {
-                if (piece.isWhite())
+                const int NORTH = 0;
+                const int SOUTH = 1;
+                const int EAST = 2;
+                const int WEST = 3;
+
+                int[,,] legal_offsets = new int[4,7,2]
                 {
-                    //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
-                    if (chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite())
-                    {
-                        return false;
-                    }
+                  
+                    { { 0,  1}, { 0,  2}, { 0,  3}, { 0,  4}, { 0,  5}, { 0,  6}, { 0,  7} }, // top    branch
+                    { { 0, -1}, { 0, -2}, { 0, -3}, { 0, -4}, { 0, -5}, { 0, -6}, { 0, -7} }, // bottom branch
+                    { { 1,  0}, { 2,  0}, { 3,  0}, { 4,  0}, { 5,  0}, { 6,  0}, { 7,  0} }, // right  branch
+                    { { -1, 0}, { -2, 0}, { -3, 0}, { -4, 0}, { -5, 0}, { -6, 0}, { -7, 0} }  // left   branch
+                };
+
+                int direction = 0;
+
+                int[] requested_offset = new int[2];
+                int[] requested_square = new int[2];
+
+                requested_offset[0] = requestedColumn  - piece.Location.X;
+                requested_offset[1] = requestedRow     - piece.Location.Y;
+
+                if (requested_offset[0] != 0 && requested_offset[1] != 0)
+                {
+                    return false;
                 }
-                else
+
+                if (requested_offset[0] == 0 && requested_offset[1] > 0) { direction = NORTH; }
+                if (requested_offset[0] == 0 && requested_offset[1] < 0) { direction = SOUTH; }
+                if (requested_offset[0] > 0 && requested_offset[1] == 0) { direction = EAST; }
+                if (requested_offset[0] < 0 && requested_offset[1] == 0) { direction = WEST; }
+
+                for (int i = 0; i < 8; i++)
                 {
-                    //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
-                    if (chessBoard[requestedColumn, requestedRow].IsOccupiedByBlack())
+                    requested_square[0] = piece.Location.X + legal_offsets[direction,i,0];
+                    requested_square[1] = piece.Location.Y + legal_offsets[direction,i,1];
+
+                    if (requested_square[0] == requestedColumn && requested_square[1] == requestedRow)
+                    {
+                        return true;
+                    }
+
+                    if (chessBoard[requested_square[0],requested_square[1]].IsOccupied())
                     {
                         return false;
                     }
@@ -507,41 +538,38 @@ namespace ChessGUI
             }
             else if (piece is King)
             {
-                if (piece.isWhite())
+                bool move_legal = true;
+                bool offset_found = false;
+
+                int[,] legal_offsets = new int[,]
                 {
-                    //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
-                    if (chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite())
-                    {
-                        return false;
-                    }
-                }
-                else
+                    { -1,  1}, { 0,  1}, { 1, 1},
+                    { -1,  0},           { 1, 0},
+                    { -1, -1}, { 0, -1}, { 1, -1}
+                };
+
+                int[] requested_offset = new int [2];
+
+                requested_offset[0] = requestedColumn - piece.Location.X;
+                requested_offset[1] = requestedRow    - piece.Location.Y;
+
+                for (int i = 0; i < 8; i++)
                 {
-                    //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
-                    if (chessBoard[requestedColumn, requestedRow].IsOccupiedByBlack())
-                    {
-                        return false;
-                    }
+                    if (requested_offset[0] == legal_offsets[i,0])
+                        if (requested_offset[1] == legal_offsets[i,1])
+                            offset_found = true;
                 }
+
+                if (!offset_found)
+                {
+                    move_legal = false;
+                }
+
+                return move_legal;
             }
             else if (piece is Queen)
             {
-                if (piece.isWhite())
-                {
-                    //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
-                    if (chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite())
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
-                    if (chessBoard[requestedColumn, requestedRow].IsOccupiedByBlack())
-                    {
-                        return false;
-                    }
-                }
+                
             }
 
             return false;
