@@ -569,7 +569,76 @@ namespace ChessGUI
             }
             else if (piece is Queen)
             {
-                
+                // directions possible by the Queen
+                const int NORTH_WEST = 0;
+                const int NORTH_EAST = 1;
+                const int SOUTH_WEST = 2;
+                const int SOUTH_EAST = 3;
+                const int NORTH = 4;
+                const int SOUTH = 5;
+                const int EAST = 6;
+                const int WEST = 7;
+
+                int direction = 0;
+
+                // all legal square offsets relative to the current square
+                int[,,] legal_offsets = new int[8,7,2]
+                {
+                    // Bishop offsets
+                    { { -1,  1}, { -2,  2}, { -3,  3}, { -4,  4}, { -5,  5}, { -6,  6}, { -7,  7} }, // top-left     branch
+                    { { 1,  1}, { 2,  2}, { 3,  3}, { 4,  4}, { 5,  5}, { 6,  6}, { 7,  7} }, // top-right    branch
+                    { { -1, -1}, { -2, -2}, { -3, -3}, { -4, -4}, { -5, -5}, { -6, -6}, { -7, -7} }, // bottom-left  branch
+                    { { 1, -1}, { 2, -2}, { 3, -3}, { 4, -4}, { 5, -5}, { 6, -6}, { 7, -7} }, // bottom-right branch
+                    // Rook offsets
+                    { { 0,  1}, { 0,  2}, { 0,  3}, { 0,  4}, { 0,  5}, { 0,  6}, { 0,  7} },  // top    branch
+                    { { 0, -1}, { 0, -2}, { 0, -3}, { 0, -4}, { 0, -5}, { 0, -6}, { 0, -7} },  // bottom branch
+                    { { 1,  0}, { 2,  0}, { 3,  0}, { 4,  0}, { 5,  0}, { 6,  0}, { 7,  0} },  // right  branch
+                    { { -1,  0}, { -2,  0}, { -3,  0}, { -4,  0}, { -5, 0}, { -6,  0}, { -7,  0} }   // left   branch
+                };
+
+                int[] requested_offset = new int[2]; // offset of the requested square relative to the current square
+                int[] requested_square = new int[2]; // current square being checked for obstacles
+
+                // get offset of requested square relative to current square
+                requested_offset[0] = requestedColumn - piece.Location.X;
+                requested_offset[1] = requestedRow    - piece.Location.Y;
+
+                // check if offset is diagonal
+                if ((Math.Abs(requested_offset[0]) != Math.Abs(requested_offset[1])) && (requested_offset[0] != 0 && requested_offset[1] != 0))
+                {
+                    return false;
+                }
+
+                // get the direction of the requested square relative to current location
+                if (requested_offset[0] < 0 && requested_offset[1] > 0) { direction = NORTH_WEST; }
+                if (requested_offset[0] > 0 && requested_offset[1] > 0) { direction = NORTH_EAST; }
+                if (requested_offset[0] < 0 && requested_offset[1] < 0) { direction = SOUTH_WEST; }
+                if (requested_offset[0] > 0 && requested_offset[1] < 0) { direction = SOUTH_EAST; }
+
+                if (requested_offset[0] == 0 && requested_offset[1] > 0) { direction = NORTH; }
+                if (requested_offset[0] == 0 && requested_offset[1] < 0) { direction = SOUTH; }
+                if (requested_offset[0] > 0 && requested_offset[1] == 0) { direction = EAST; }
+                if (requested_offset[0] < 0 && requested_offset[1] == 0) { direction = WEST; }
+
+                // loop through all square between the current square and requested square
+                for (int i = 0; i < 8; i++)
+                {
+                    // get location of a square in the path to the requested square
+                    requested_square[0] = piece.Location.X + legal_offsets[direction,i,0];
+                    requested_square[1] = piece.Location.Y + legal_offsets[direction,i,1];
+
+                    // check if current square being checked is the requested square; if so stop
+                    if (requested_square[0] == requestedColumn && requested_square[1] == requestedRow)
+                    {
+                        return true;
+                    }
+
+                    // check if current square being checked is occupied; if so declare move illegal
+                    if (chessBoard[requested_square[0], requested_square[1]].IsOccupied())
+                    {
+                        return false;
+                    }
+                }
             }
 
             return false;
