@@ -189,7 +189,7 @@ namespace ChessGUI
                     {
                         if (occupant.isWhite())
                         {
-                            chessBoardPanels[column,row].BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhitePawn.png");
+                            chessBoardPanels[column, row].BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhitePawn.png");
                         }
                         else
                         {
@@ -266,13 +266,13 @@ namespace ChessGUI
         {
             ChessPiece pieceToMove = currSquareClicked.GetOccupant();
 
-            if(MoveIsLegal(requestedColumn, requestedRow))
+            if (MoveIsLegal(requestedColumn, requestedRow))
             {
                 //Update the location of the piece on the chess board
                 chessBoard[requestedColumn, requestedRow].occupant = currSquareClicked.occupant;
 
                 //Update the piece's location
-                chessBoard[requestedColumn, requestedRow].occupant.Location = new Point(requestedColumn,requestedRow);
+                chessBoard[requestedColumn, requestedRow].occupant.Location = new Point(requestedColumn, requestedRow);
 
                 chessBoard[currSquareClicked.Col, currSquareClicked.Row].occupant = null;
 
@@ -304,7 +304,7 @@ namespace ChessGUI
         {
             ChessPiece piece = currSquareClicked.GetOccupant();
 
-            if(piece is Pawn)
+            if (piece is Pawn)
             {
                 if (piece.isWhite())
                 {
@@ -315,7 +315,7 @@ namespace ChessGUI
                     }
 
                     //CANNOT MOVE BACKWARDS
-                    if(requestedRow > piece.Location.Y)
+                    if (requestedRow > piece.Location.Y)
                     {
                         return false;
                     }
@@ -326,19 +326,19 @@ namespace ChessGUI
                         if (Math.Abs(requestedRow - piece.Location.Y) <= 2 && requestedColumn - piece.Location.X == 0)
                         {
                             return true;
-                        } 
+                        }
                     }
 
                     //REGULAR MOVE FORWARD
-                    if(Math.Abs(requestedRow - piece.Location.Y) == 1 && requestedColumn - piece.Location.X == 0)
+                    if (Math.Abs(requestedRow - piece.Location.Y) == 1 && requestedColumn - piece.Location.X == 0)
                     {
                         return true;
                     }
 
                     //TAKE PIECE DIAGONAL
-                    if(chessBoard[requestedColumn, requestedRow].IsOccupiedByBlack())
+                    if (chessBoard[requestedColumn, requestedRow].IsOccupiedByBlack())
                     {
-                        if(Math.Abs(requestedColumn - piece.Location.X) == 1 && Math.Abs(requestedRow - piece.Location.Y) == 1)
+                        if (Math.Abs(requestedColumn - piece.Location.X) == 1 && Math.Abs(requestedRow - piece.Location.Y) == 1)
                         {
                             return true;
                         }
@@ -383,7 +383,7 @@ namespace ChessGUI
                     }
                 }
             }
-            else if(piece is Knight)
+            else if (piece is Knight)
             {
                 if (piece.isWhite())
                 {
@@ -394,7 +394,7 @@ namespace ChessGUI
                     }
 
                     //REGULAR L-Shaped Move
-                    if(Math.Abs(requestedColumn - piece.Location.X) == 2 && Math.Abs(requestedRow - piece.Location.Y) == 1)
+                    if (Math.Abs(requestedColumn - piece.Location.X) == 2 && Math.Abs(requestedRow - piece.Location.Y) == 1)
                     {
                         return true;
                     }
@@ -424,46 +424,123 @@ namespace ChessGUI
             }
             else if (piece is Bishop)
             {
-                if (piece.isWhite())
+                //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
+                if (chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite())
                 {
-
+                    return false;
                 }
-                else
+
+                // directions possible by the bishop
+                const int NORTH_WEST = 0;
+                const int NORTH_EAST = 1;
+                const int SOUTH_EAST = 2;
+                const int SOUTH_WEST = 3;
+
+                int direction = 0;
+
+                int[,,] legalOffsets = new int[4,7,2]
+                {
+                        { { -1, 1}, {-2, 2}, {-3,  3}, {-4,  4}, {-5,  5}, {-6,  6}, {-7, 7} },// top-left     branch
+                        { { 1,  1}, { 2, 2}, { 3,  3}, { 4,  4}, { 5,  5}, { 6,  6}, {7,  7} },// top-right    branch
+                        { { -1,-1}, {-2,-2}, {-3, -3}, {-4, -4}, {-5, -5}, {-6, -6}, {-7,-7} },// bottom-left  branch
+                        { { 1, -1}, { 2,-2}, { 3, -3}, { 4, -4}, { 5, -5}, {6,  -6}, {7, -7} } // bottom-right branch
+                };
+
+                int[] requested_offset = new int[2]; // offset of the requested square relative to the current square
+                int[] requested_square = new int[2]; // current square being checked for obstacles
+
+                // get offset of requested square relative to current square
+                requested_offset[0] = requestedColumn - piece.Location.X;
+                requested_offset[1] = requestedRow - piece.Location.Y;
+
+                // check if offset is diagonal
+                if (Math.Abs(requested_offset[0]) != Math.Abs(requested_offset[1]))
+                {
+                    return false;
+                }
+
+                // get the direction of the requested square relative to current location
+                if (requested_offset[0] < 0 && requested_offset[1] > 0) { direction = NORTH_WEST; }
+                if (requested_offset[0] > 0 && requested_offset[1] > 0) { direction = NORTH_EAST; }
+                if (requested_offset[0] < 0 && requested_offset[1] < 0) { direction = SOUTH_EAST; }
+                if (requested_offset[0] > 0 && requested_offset[1] < 0) { direction = SOUTH_WEST; }
+
+                // loop through all square between the current square and requested square
+                for (int i = 0; i < 8; i++)
                 {
 
+                    // get location of a square in the path to the requested square
+                    requested_square[0] = piece.Location.X + legalOffsets[direction, i, 0];
+                    requested_square[1] = piece.Location.Y + legalOffsets[direction, i, 1];
+
+                    // check if current square being checked is the requested square; if so stop
+                    if (requested_square[0] == requestedColumn && requested_square[1] == requestedRow)
+                    {
+                        return true;
+                    }
+
+                    // check if current square being checked is occupied; if so declare move illegal
+                    if (chessBoard[requested_square[0], requested_square[1]].IsOccupied())
+                    {
+                        return false;
+                    }
                 }
             }
             else if (piece is Rook)
             {
                 if (piece.isWhite())
                 {
-
+                    //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
+                    if (chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite())
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
-
+                    //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
+                    if (chessBoard[requestedColumn, requestedRow].IsOccupiedByBlack())
+                    {
+                        return false;
+                    }
                 }
             }
             else if (piece is King)
             {
                 if (piece.isWhite())
                 {
-
+                    //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
+                    if (chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite())
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
-
+                    //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
+                    if (chessBoard[requestedColumn, requestedRow].IsOccupiedByBlack())
+                    {
+                        return false;
+                    }
                 }
             }
             else if (piece is Queen)
             {
                 if (piece.isWhite())
                 {
-
+                    //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
+                    if (chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite())
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
-
+                    //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
+                    if (chessBoard[requestedColumn, requestedRow].IsOccupiedByBlack())
+                    {
+                        return false;
+                    }
                 }
             }
 
@@ -483,7 +560,7 @@ namespace ChessGUI
             int squareRow = p.Location.Y / 60 - 1;
 
             Square squareClicked = chessBoard[squareColumn, squareRow];
-            
+
             //SELECTING PHASE: this is where a piece to move is not selected yet
             if (currSquareClicked is null)
             {
@@ -515,7 +592,7 @@ namespace ChessGUI
             else
             {
                 //RESELECTING PIECE: if the user already clicked its own colored piece and clicks on another square with its own colored piece, change the currently selected piece to this new one
-                if(currSquareClicked.IsOccupiedByWhite() && squareClicked.IsOccupiedByWhite())
+                if (currSquareClicked.IsOccupiedByWhite() && squareClicked.IsOccupiedByWhite())
                 {
                     currSquareClicked = squareClicked;
                     currSquareClicked.Col = p.Location.X / 60 - 1;
