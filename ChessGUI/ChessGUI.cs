@@ -719,8 +719,17 @@ namespace ChessGUI
         private void Square_Hover(object? sender, EventArgs e)
         {
             Panel p = (Panel)sender;
-            Square squareClicked = chessBoard[p.Location.X / 60 - 1, p.Location.Y / 60 - 1];
-            if (squareClicked.IsOccupied())
+
+            int requestedCol = p.Location.X / 60 - 1;
+            int requestedRow = p.Location.Y / 60 - 1;
+
+            Square squareHovering = chessBoard[requestedCol, requestedRow];
+
+            if (squareHovering.IsOccupied() && currSquareClicked is null)
+            {
+                p.Cursor = Cursors.Hand;
+            }
+            else if (currSquareClicked is not null && MoveIsLegal(requestedCol,requestedRow))
             {
                 p.Cursor = Cursors.Hand;
             }
