@@ -291,11 +291,16 @@ namespace ChessGUI
             {
                 if(pieceToMove is King && requestedColumn == 5)
                 {
-                    Castle(true);
-                }
-                else if(pieceToMove is King && requestedColumn == 1)
-                { 
-                    Castle(false);
+                    //castle right
+                    if(requestedColumn == 5)
+                    {
+                        Castle(true);
+                    }
+                    //castle left
+                    else if( requestedColumn == 1)
+                    {
+                        Castle(false);
+                    }
                 }
                 else
                 {
