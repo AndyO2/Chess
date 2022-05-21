@@ -23,6 +23,10 @@ namespace ChessGUI
         /// </summary>
         private Square? currSquareClicked;
 
+        private King whiteKing;
+
+        private King blackKing;
+
         /// <summary>
         /// The size of the tile
         /// </summary>
@@ -114,12 +118,16 @@ namespace ChessGUI
                     //White King
                     else if (row == 7 && column == 3)
                     {
-                        chessBoard[column, row] = new Square(column, row, new King('W', column, row));
+                        whiteKing = new King('W', column, row);
+
+                        chessBoard[column, row] = new Square(column, row, whiteKing);
                     }
                     //Black King
                     else if (row == 0 && column == 3)
                     {
-                        chessBoard[column, row] = new Square(column, row, new King('B', column, row));
+                        blackKing = new King('B', column, row);
+
+                        chessBoard[column, row] = new Square(column, row, blackKing);
                     }
                     //White Queen
                     else if (row == 7 && column == 4)
@@ -177,6 +185,19 @@ namespace ChessGUI
         /// <param name="e"></param>
         private void Draw_Board(object? sender, PaintEventArgs e)
         {
+            if (checkWhiteIsInCheck())
+            {
+                GameMessagesTextBox.Text = "White Is In Check!";
+            }
+            else if (checkBlackIsInCheck())
+            {
+                GameMessagesTextBox.Text = "Black Is In Check!";
+            }
+            else
+            {
+                GameMessagesTextBox.Clear();
+            }
+
             // double for loop to handle all rows and columns
             for (var column = 0; column < gridSize; column++)
             {
@@ -286,6 +307,8 @@ namespace ChessGUI
                 {
                     whiteTurn = true;
                 }
+
+                this.Invalidate();
             }
             else
             {
@@ -644,6 +667,53 @@ namespace ChessGUI
             return false;
         }
 
+        private bool checkWhiteIsInCheck()
+        {
+            for(int i = 0; i < 8; i++)
+            {
+                for(int j = 0; j < 8; j++)
+                {
+                    if (chessBoard[i, j].IsOccupiedByBlack())
+                    {
+                        currSquareClicked = chessBoard[i, j];
+                        //TODO: Need to know where the king is at all times
+                        if(MoveIsLegal(whiteKing.Location.X, whiteKing.Location.Y))
+                        {
+                            //reset curr square clicked. We need to set it because move is legal checks if the current square clicked's move is legal
+                            currSquareClicked = null;
+                            return true;
+                        }
+                    }
+                }
+            }
+            currSquareClicked = null;
+            return false;
+        }
+
+
+        private bool checkBlackIsInCheck()
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (chessBoard[i, j].IsOccupiedByWhite())
+                    {
+                        currSquareClicked = chessBoard[i, j];
+                        //TODO: Need to know where the king is at all times
+                        if (MoveIsLegal(blackKing.Location.X, blackKing.Location.Y))
+                        {
+                            //reset curr square clicked. We need to set it because move is legal checks if the current square clicked's move is legal
+                            currSquareClicked = null;
+                            return true;
+                        }
+                    }
+                }
+            }
+            currSquareClicked = null;
+            return false;
+        }
+
         /// <summary>
         /// Event handler when a square is clicked
         /// </summary>
@@ -708,7 +778,7 @@ namespace ChessGUI
                 }
             }
 
-            this.Invalidate();
+            //this.Invalidate();
         }
 
         /// <summary>

@@ -36,6 +36,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.GameMessagesTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // AFileLabel
@@ -118,11 +119,19 @@
             this.label6.TabIndex = 0;
             this.label6.Text = "H";
             // 
+            // GameMessagesTextBox
+            // 
+            this.GameMessagesTextBox.Location = new System.Drawing.Point(236, 12);
+            this.GameMessagesTextBox.Name = "GameMessagesTextBox";
+            this.GameMessagesTextBox.Size = new System.Drawing.Size(214, 23);
+            this.GameMessagesTextBox.TabIndex = 1;
+            // 
             // Chess
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 661);
+            this.Controls.Add(this.GameMessagesTextBox);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -149,5 +158,6 @@
         private Label label4;
         private Label label5;
         private Label label6;
+        private TextBox GameMessagesTextBox;
     }
 }
