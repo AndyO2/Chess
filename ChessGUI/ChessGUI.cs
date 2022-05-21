@@ -707,7 +707,7 @@ namespace ChessGUI
                     chessBoard[5, 7].occupant.Location = new Point(5, 7);
                     chessBoard[3, 7].occupant = null;
 
-                    //Move the white rook to the 
+                    //Move the white rook to the left
                     chessBoard[4, 7].occupant = chessBoard[7, 7].occupant;
                     chessBoard[4, 7].occupant.Location = new Point(4, 7);
                     chessBoard[7, 7].occupant = null;
@@ -715,7 +715,15 @@ namespace ChessGUI
                 //castle left
                 else
                 {
+                    //Move white king to the left two squares
+                    chessBoard[1,7].occupant = currSquareClicked.occupant;
+                    chessBoard[1,7].occupant.Location = new Point(1, 7);
+                    chessBoard[3, 7].occupant = null;
 
+                    //Move the rook to the right
+                    chessBoard[2,7].occupant = chessBoard[0,7].occupant;
+                    chessBoard[2,7].occupant.Location = new Point(2, 7);
+                    chessBoard[0,7].occupant = null;
                 }
             }
             else
@@ -723,12 +731,28 @@ namespace ChessGUI
                 //castle right
                 if (castleRight)
                 {
+                    //Move the white king to the right two squares
+                    chessBoard[5, 0].occupant = currSquareClicked.occupant;
+                    chessBoard[5, 0].occupant.Location = new Point(5, 0);
+                    chessBoard[3, 0].occupant = null;
 
+                    //Move the black rook to the left
+                    chessBoard[4, 0].occupant = chessBoard[7, 0].occupant;
+                    chessBoard[4, 0].occupant.Location = new Point(4, 0);
+                    chessBoard[7, 0].occupant = null;
                 }
                 //castle left
                 else
                 {
+                    //Move black king to the left two squares
+                    chessBoard[1, 0].occupant = currSquareClicked.occupant;
+                    chessBoard[1, 0].occupant.Location = new Point(1, 0);
+                    chessBoard[3, 0].occupant = null;
 
+                    //Move the rook to the right
+                    chessBoard[2, 0].occupant = chessBoard[0, 0].occupant;
+                    chessBoard[2, 0].occupant.Location = new Point(2, 0);
+                    chessBoard[0, 0].occupant = null;
                 }
             }
         }
