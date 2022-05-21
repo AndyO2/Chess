@@ -598,8 +598,7 @@ namespace ChessGUI
                 //If the requested offset is the castling move, then check if the required conditions are met to castle
                 if(requested_offset[0] == 2 && requested_offset[1] == 0 || requested_offset[0] == -2 && requested_offset[1] == 0)
                 {
-                    //return CheckCastlingAllowed(requestedColumn, requestedRow);
-                    return true;
+                    return CheckCastlingAllowed(requestedColumn, requestedRow);
                 }
 
                 //regular moves
@@ -767,6 +766,8 @@ namespace ChessGUI
         {
             //White King requested location is (1,7) going to the left and (5,7) going to the right
             //Black King requested location is (1,0) going to the left and (5,0) going to the right
+
+            //TODO: Doesn't detect if the king has already moved
             if (currSquareClicked.occupant is King k)
             {
                 //If the king has moved, castling is never allowed
@@ -782,10 +783,10 @@ namespace ChessGUI
                     if(requestedCol == 5 && requestedRow == 7)
                     {
                         //1) Check if there is a rook at (7,7), it is the same color and it has not moved
-                        if(chessBoard[5,7].GetOccupant() is Rook r && r.isWhite() && !r.hasMoved)
+                        if(chessBoard[7,7].GetOccupant() is Rook r && r.isWhite() && !r.hasMoved)
                         {
                             //2) Check that there is not a piece at (4,7) (5,7) and (6,7)
-                            if(chessBoard[4,7].IsOccupied() && !chessBoard[5,7].IsOccupied() && !chessBoard[6, 7].IsOccupied())
+                            if(!chessBoard[4,7].IsOccupied() && !chessBoard[5,7].IsOccupied() && !chessBoard[6, 7].IsOccupied())
                             {
                                 return true;
                             }
