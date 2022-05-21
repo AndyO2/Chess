@@ -289,13 +289,35 @@ namespace ChessGUI
 
             if (MoveIsLegal(requestedColumn, requestedRow))
             {
-                //Update the location of the piece on the chess board
-                chessBoard[requestedColumn, requestedRow].occupant = currSquareClicked.occupant;
+                if(pieceToMove is King && requestedColumn == 5)
+                {
+                    Castle(true);
+                }
+                else if(pieceToMove is King && requestedColumn == 1)
+                { 
+                    Castle(false);
+                }
+                else
+                {
+                    //Update the location of the piece on the chess board
+                    chessBoard[requestedColumn, requestedRow].occupant = currSquareClicked.occupant;
 
-                //Update the piece's location
-                chessBoard[requestedColumn, requestedRow].occupant.Location = new Point(requestedColumn, requestedRow);
+                    //Update the piece's location
+                    chessBoard[requestedColumn, requestedRow].occupant.Location = new Point(requestedColumn, requestedRow);
 
-                chessBoard[currSquareClicked.Col, currSquareClicked.Row].occupant = null;
+                    chessBoard[currSquareClicked.Col, currSquareClicked.Row].occupant = null;
+                }
+                
+                //If we move the king, the king is no longer to castle
+                if(currSquareClicked.GetOccupant() is King k)
+                {
+                    k.hasMoved = true;
+                }
+                //If we move the rook, it can no longer be castled
+                else if(currSquareClicked.GetOccupant() is Rook r)
+                {
+                    r.hasMoved = true;
+                }
 
                 currSquareClicked = null;
 
@@ -312,7 +334,7 @@ namespace ChessGUI
             }
             else
             {
-                Debug.WriteLine("Invalid Move");
+               GameMessagesTextBox.Text = "Invalid Move";
             }
         }
 
@@ -561,13 +583,10 @@ namespace ChessGUI
             }
             else if (piece is King)
             {
-                bool move_legal = true;
-                bool offset_found = false;
-
-                int[,] legal_offsets = new int[,]
+                int[,] legal_offsets = new int[10, 2]
                 {
                     { -1,  1}, { 0,  1}, { 1, 1},
-                    { -1,  0},           { 1, 0},
+          {-2 , 0}, { -1,  0},           { 1, 0 }, { 2, 0 },
                     { -1, -1}, { 0, -1}, { 1, -1}
                 };
 
@@ -576,19 +595,23 @@ namespace ChessGUI
                 requested_offset[0] = requestedColumn - piece.Location.X;
                 requested_offset[1] = requestedRow    - piece.Location.Y;
 
-                for (int i = 0; i < 8; i++)
+                //If the requested offset is the castling move, then check if the required conditions are met to castle
+                if(requested_offset[0] == 2 && requested_offset[1] == 0 || requested_offset[0] == -2 && requested_offset[1] == 0)
                 {
-                    if (requested_offset[0] == legal_offsets[i,0])
-                        if (requested_offset[1] == legal_offsets[i,1])
-                            offset_found = true;
+                    //return CheckCastlingAllowed(requestedColumn, requestedRow);
+                    return true;
                 }
 
-                if (!offset_found)
+                //regular moves
+                for (int i = 0; i < 10; i++)
                 {
-                    move_legal = false;
+                    if (requested_offset[0] == legal_offsets[i, 0] && requested_offset[1] == legal_offsets[i, 1])
+                    {
+                        return true;
+                    }
                 }
 
-                return move_legal;
+                return false;
             }
             else if (piece is Queen)
             {
@@ -667,6 +690,135 @@ namespace ChessGUI
             return false;
         }
 
+        /// <summary>
+        /// Helper method that castles after checking that castling is allowed
+        /// </summary>
+        /// <param name="requestedCol"></param>
+        /// <param name="requestedRow"></param>
+        private void Castle(bool castleRight)
+        {
+            if (whiteTurn)
+            {
+                //castle right
+                if(castleRight)
+                {
+                    //Move the white king to the right two squares
+                    chessBoard[5, 7].occupant = currSquareClicked.occupant;
+                    chessBoard[5, 7].occupant.Location = new Point(5, 7);
+                    chessBoard[3, 7].occupant = null;
+
+                    //Move the white rook to the 
+                    chessBoard[4, 7].occupant = chessBoard[7, 7].occupant;
+                    chessBoard[4, 7].occupant.Location = new Point(4, 7);
+                    chessBoard[7, 7].occupant = null;
+                }
+                //castle left
+                else
+                {
+
+                }
+            }
+            else
+            {
+                //castle right
+                if (castleRight)
+                {
+
+                }
+                //castle left
+                else
+                {
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// Helper method that determines if a castle move is allowed
+        /// </summary>
+        /// <param name="requestedCol"></param>
+        /// <param name="requestedRow"></param>
+        /// <returns></returns>
+        private bool CheckCastlingAllowed(int requestedCol, int requestedRow)
+        {
+            //White King requested location is (1,7) going to the left and (5,7) going to the right
+            //Black King requested location is (1,0) going to the left and (5,0) going to the right
+            if (currSquareClicked.occupant is King k)
+            {
+                //If the king has moved, castling is never allowed
+                if (k.hasMoved)
+                {
+                    return false;
+                }
+
+                //White King castle
+                if (whiteTurn)
+                {
+                    //CASTLING QUEEN SIDE (to the right)
+                    if(requestedCol == 5 && requestedRow == 7)
+                    {
+                        //1) Check if there is a rook at (7,7), it is the same color and it has not moved
+                        if(chessBoard[5,7].GetOccupant() is Rook r && r.isWhite() && !r.hasMoved)
+                        {
+                            //2) Check that there is not a piece at (4,7) (5,7) and (6,7)
+                            if(chessBoard[4,7].IsOccupied() && !chessBoard[5,7].IsOccupied() && !chessBoard[6, 7].IsOccupied())
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                    //CASTLING KING SIDE (to the left)
+                    else if(requestedCol == 1 && requestedRow == 7)
+                    {
+                        //1) Check if there is a rook at (0,7), it is the same color and it has not moved
+                        if (chessBoard[0, 7].GetOccupant() is Rook r && r.isWhite() && !r.hasMoved)
+                        {
+                            //2) Check that there is not a piece at (4,7) (5,7) and (6,7)
+                            if (!chessBoard[1, 7].IsOccupied() && !chessBoard[2, 7].IsOccupied())
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                //Black king castle
+                else
+                {
+                    //CASTLING QUEEN SIDE (to the right)
+                    if (requestedCol == 5 && requestedRow == 0)
+                    {
+                        //1) Check if there is a rook at (7,0), it is the same color and it has not moved
+                        if (chessBoard[7, 0].GetOccupant() is Rook r && r.isBlack() && !r.hasMoved)
+                        {
+                            //2) Check that there is not a piece at (4,0) (5,0) and (6,0)
+                            if (!chessBoard[4, 0].IsOccupied() && !chessBoard[5, 0].IsOccupied() && !chessBoard[6, 0].IsOccupied())
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                    //CASTLING KING SIDE (to the left)
+                    else if (requestedCol == 1 && requestedRow == 0)
+                    {
+                        //1) Check if there is a rook at (0,0), it is the same color and it has not moved
+                        if (chessBoard[0, 0].GetOccupant() is Rook r && r.isBlack() && !r.hasMoved)
+                        {
+                            //2) Check that there is not a piece at (1,0) (2,0)
+                            if (!chessBoard[1, 0].IsOccupied() && !chessBoard[2, 0].IsOccupied())
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Helper method that determines if white is in check
+        /// </summary>
+        /// <returns>Whether white is in check</returns>
         private bool checkWhiteIsInCheck()
         {
             for(int i = 0; i < 8; i++)
@@ -690,7 +842,10 @@ namespace ChessGUI
             return false;
         }
 
-
+        /// <summary>
+        /// Helper method that determines if black is in check
+        /// </summary>
+        /// <returns>Whether black is in check</returns>
         private bool checkBlackIsInCheck()
         {
             for (int i = 0; i < 8; i++)
@@ -748,11 +903,11 @@ namespace ChessGUI
                 //If a square that is not occupied is selected, tell user to select an occupied square
                 else if (!squareClicked.IsOccupied())
                 {
-                    Debug.WriteLine("Select a piece");
+                    GameMessagesTextBox.Text = "Select a piece";
                 }
                 else
                 {
-                    Debug.WriteLine("It is not your turn");
+                    GameMessagesTextBox.Text = "It is not your turn";
                 }
             }
             //MOVING PHASE: where a current piece is selected. The only possible moves is if now the user clicks on an empty square or on a square containing opposite color piece
@@ -777,8 +932,6 @@ namespace ChessGUI
                     MovePiece(squareColumn, squareRow);
                 }
             }
-
-            //this.Invalidate();
         }
 
         /// <summary>

@@ -8,8 +8,10 @@ namespace Chess
 {
     public class King : ChessPiece
     {
+        public bool hasMoved;
         public King(char color, int row, int column) : base(color, row, column)
         {
+            hasMoved = false;
         }
 
         public override bool MoveIsLegal(int requestedRow, int requestedColumn)

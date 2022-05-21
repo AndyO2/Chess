@@ -8,8 +8,11 @@ namespace Chess
 {
     public class Rook : ChessPiece
     {
+        public bool hasMoved;
+
         public Rook(char color, int row, int column) : base(color, row, column)
         {
+            hasMoved = false;
         }
 
         public override bool MoveIsLegal(int requestedRow, int requestedColumn)
