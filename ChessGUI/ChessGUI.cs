@@ -188,14 +188,25 @@ namespace ChessGUI
             if (checkWhiteIsInCheck())
             {
                 GameMessagesTextBox.Text = "White Is In Check!";
+                whiteTurn = true;
             }
             else if (checkBlackIsInCheck())
             {
                 GameMessagesTextBox.Text = "Black Is In Check!";
+                whiteTurn = false;
             }
             else
             {
-                GameMessagesTextBox.Clear();
+                if (whiteTurn)
+                {
+                    whiteTurn = false;
+                    GameMessagesTextBox.Text = "Black To Move";
+                }
+                else
+                {
+                    whiteTurn = true;
+                    GameMessagesTextBox.Text = "White To Move";
+                }
             }
 
             // double for loop to handle all rows and columns
@@ -313,34 +324,14 @@ namespace ChessGUI
 
                     chessBoard[currSquareClicked.Col, currSquareClicked.Row].occupant = null;
                 }
-                
-                //If we move the king, the king is no longer to castle
-                if(currSquareClicked.GetOccupant() is King k)
-                {
-                    k.hasMoved = true;
-                }
-                //If we move the rook, it can no longer be castled
-                else if(currSquareClicked.GetOccupant() is Rook r)
-                {
-                    r.hasMoved = true;
-                }
 
                 currSquareClicked = null;
-
-                if (whiteTurn)
-                {
-                    whiteTurn = false;
-                }
-                else
-                {
-                    whiteTurn = true;
-                }
 
                 this.Invalidate();
             }
             else
             {
-               GameMessagesTextBox.Text = "Invalid Move";
+                GameMessagesTextBox.Text = "Invalid Move";
             }
         }
 
@@ -476,11 +467,7 @@ namespace ChessGUI
             else if (piece is Bishop)
             {
                 //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
-                if (chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite() && whiteTurn)
-                {
-                    return false;
-                }
-                else if(chessBoard[requestedColumn, requestedRow].IsOccupiedByBlack() && !whiteTurn)
+                if (chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite() && whiteTurn || chessBoard[requestedColumn, requestedRow].IsOccupiedByBlack() && !whiteTurn)
                 {
                     return false;
                 }
@@ -543,6 +530,12 @@ namespace ChessGUI
             }
             else if (piece is Rook)
             {
+                //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
+                if (chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite() && whiteTurn || chessBoard[requestedColumn, requestedRow].IsOccupiedByBlack() && !whiteTurn)
+                {
+                    return false;
+                }
+
                 const int NORTH = 0;
                 const int SOUTH = 1;
                 const int EAST = 2;
@@ -575,7 +568,7 @@ namespace ChessGUI
                 if (requested_offset[0] > 0 && requested_offset[1] == 0) { direction = EAST; }
                 if (requested_offset[0] < 0 && requested_offset[1] == 0) { direction = WEST; }
 
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < 7; i++)
                 {
                     requested_square[0] = piece.Location.X + legal_offsets[direction,i,0];
                     requested_square[1] = piece.Location.Y + legal_offsets[direction,i,1];
@@ -585,7 +578,7 @@ namespace ChessGUI
                         return true;
                     }
 
-                    if (chessBoard[requested_square[0],requested_square[1]].IsOccupied())
+                    if (chessBoard[requested_square[0], requested_square[1]].IsOccupied())
                     {
                         return false;
                     }
@@ -624,6 +617,12 @@ namespace ChessGUI
             }
             else if (piece is Queen)
             {
+                //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
+                if (chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite() && whiteTurn || chessBoard[requestedColumn, requestedRow].IsOccupiedByBlack() && !whiteTurn)
+                {
+                    return false;
+                }
+
                 // directions possible by the Queen
                 const int NORTH_WEST = 0;
                 const int NORTH_EAST = 1;
