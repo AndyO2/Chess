@@ -476,7 +476,11 @@ namespace ChessGUI
             else if (piece is Bishop)
             {
                 //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
-                if (chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite())
+                if (chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite() && whiteTurn)
+                {
+                    return false;
+                }
+                else if(chessBoard[requestedColumn, requestedRow].IsOccupiedByBlack() && !whiteTurn)
                 {
                     return false;
                 }
