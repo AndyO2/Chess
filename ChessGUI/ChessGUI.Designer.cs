@@ -137,9 +137,11 @@
             // 
             // GameMessagesTextBox
             // 
-            this.GameMessagesTextBox.Location = new System.Drawing.Point(236, 12);
+            this.GameMessagesTextBox.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.GameMessagesTextBox.ForeColor = System.Drawing.Color.Red;
+            this.GameMessagesTextBox.Location = new System.Drawing.Point(267, 22);
             this.GameMessagesTextBox.Name = "GameMessagesTextBox";
-            this.GameMessagesTextBox.Size = new System.Drawing.Size(214, 23);
+            this.GameMessagesTextBox.Size = new System.Drawing.Size(214, 34);
             this.GameMessagesTextBox.TabIndex = 1;
             // 
             // label7

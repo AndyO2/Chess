@@ -289,7 +289,8 @@ namespace ChessGUI
 
             if (MoveIsLegal(requestedColumn, requestedRow))
             {
-                if(pieceToMove is King && requestedColumn == 5)
+                //Special Move: Castling
+                if(pieceToMove is King)
                 {
                     //castle right
                     if(requestedColumn == 5)
