@@ -3,11 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32407.343
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessGUI", "ChessGUI\ChessGUI.csproj", "{11063619-B579-4FD9-9AA0-006A2C37C8A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessGUI", "ChessGUI\ChessGUI.csproj", "{11063619-B579-4FD9-9AA0-006A2C37C8A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChessPiece", "ChessPiece\ChessPiece.csproj", "{F30899AA-1B80-419C-B10C-7577CF156867}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessPiece", "ChessPiece\ChessPiece.csproj", "{F30899AA-1B80-419C-B10C-7577CF156867}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Square", "Chess\Square.csproj", "{43E3F6BE-E6E3-48B5-9C4B-E5E826FC7984}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Square", "Chess\Square.csproj", "{43E3F6BE-E6E3-48B5-9C4B-E5E826FC7984}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D9921A81-5B44-490E-89AF-B0D24767F4FC}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
