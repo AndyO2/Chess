@@ -779,9 +779,6 @@ namespace ChessGUI
         /// <returns></returns>
         private bool CheckCastlingAllowed(int requestedCol, int requestedRow)
         {
-            //White King requested location is (1,7) going to the left and (5,7) going to the right
-            //Black King requested location is (1,0) going to the left and (5,0) going to the right
-
             //TODO: Doesn't detect if the king has already moved
             if (currSquareClicked.occupant is King k)
             {

@@ -10,9 +10,8 @@ Repo:       https://github.com/AndyO2/Chess.git
     Implemented Functionality
     1) Detecting all legal moves for each piece
     2) Castling
-    3) Pawn first move
     4) Check
-    5) Tracking Moves
+    5) Tracking Turns
     
     Missing Functionality
     1) Determining checkmate
