@@ -7,7 +7,12 @@ Repo:       https://github.com/AndyO2/Chess.git
 
 # Overview of the Chess functionality
     
-    This Chess game is capable of all moves of all pieces.
+    Implemented Functionality
+    1) Detecting all legal moves for each piece
+    2) Castling
+    3) Pawn first move
+    4) Check
+    5) Tracking Moves
     
     Missing Functionality
     1) Determining checkmate
