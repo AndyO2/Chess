@@ -23,8 +23,14 @@ namespace ChessGUI
         /// </summary>
         private Square? currSquareClicked;
 
+        /// <summary>
+        /// Keeps track of the white king
+        /// </summary>
         private King whiteKing;
 
+        /// <summary>
+        /// Keeps track of the black king
+        /// </summary>
         private King blackKing;
 
         /// <summary>
@@ -59,6 +65,7 @@ namespace ChessGUI
             whiteTurn = true;
 
             this.Paint += Draw_Board;
+
             DoubleBuffered = true;
 
             InitializeComponent();
@@ -116,26 +123,26 @@ namespace ChessGUI
                         chessBoard[column, row] = new Square(column, row, new Pawn('B', column, row));
                     }
                     //White King
-                    else if (row == 7 && column == 3)
+                    else if (row == 7 && column == 4)
                     {
                         whiteKing = new King('W', column, row);
 
                         chessBoard[column, row] = new Square(column, row, whiteKing);
                     }
                     //Black King
-                    else if (row == 0 && column == 3)
+                    else if (row == 0 && column == 4)
                     {
                         blackKing = new King('B', column, row);
 
                         chessBoard[column, row] = new Square(column, row, blackKing);
                     }
                     //White Queen
-                    else if (row == 7 && column == 4)
+                    else if (row == 7 && column == 3)
                     {
                         chessBoard[column, row] = new Square(column, row, new Queen('W', column, row));
                     }
                     //Black Queen
-                    else if (row == 0 && column == 4)
+                    else if (row == 0 && column == 3)
                     {
                         chessBoard[column, row] = new Square(column, row, new Queen('B', column, row));
                     }
@@ -185,12 +192,12 @@ namespace ChessGUI
         /// <param name="e"></param>
         private void Draw_Board(object? sender, PaintEventArgs e)
         {
-            if (checkWhiteIsInCheck())
+            if (CheckWhiteIsInCheck())
             {
                 GameMessagesTextBox.Text = "White Is In Check!";
                 whiteTurn = true;
             }
-            else if (checkBlackIsInCheck())
+            else if (CheckBlackIsInCheck())
             {
                 GameMessagesTextBox.Text = "Black Is In Check!";
                 whiteTurn = false;
@@ -208,7 +215,6 @@ namespace ChessGUI
                     GameMessagesTextBox.Text = "White To Move";
                 }
             }
-
             // double for loop to handle all rows and columns
             for (var column = 0; column < gridSize; column++)
             {
@@ -467,7 +473,7 @@ namespace ChessGUI
             else if (piece is Bishop)
             {
                 //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
-                if (chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite() && whiteTurn || chessBoard[requestedColumn, requestedRow].IsOccupiedByBlack() && !whiteTurn)
+                if ((chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite() && piece.isWhite()) || (chessBoard[requestedColumn, requestedRow].IsOccupiedByBlack() && piece.isBlack()))
                 {
                     return false;
                 }
@@ -853,7 +859,7 @@ namespace ChessGUI
         /// Helper method that determines if white is in check
         /// </summary>
         /// <returns>Whether white is in check</returns>
-        private bool checkWhiteIsInCheck()
+        private bool CheckWhiteIsInCheck()
         {
             for(int i = 0; i < 8; i++)
             {
@@ -873,6 +879,7 @@ namespace ChessGUI
                 }
             }
             currSquareClicked = null;
+
             return false;
         }
 
@@ -880,7 +887,7 @@ namespace ChessGUI
         /// Helper method that determines if black is in check
         /// </summary>
         /// <returns>Whether black is in check</returns>
-        private bool checkBlackIsInCheck()
+        private bool CheckBlackIsInCheck()
         {
             for (int i = 0; i < 8; i++)
             {
@@ -900,6 +907,7 @@ namespace ChessGUI
                 }
             }
             currSquareClicked = null;
+
             return false;
         }
 
