@@ -36,7 +36,12 @@ namespace ChessGUI
         /// <summary>
         /// The size of the tile
         /// </summary>
-        private const int tileSize = 60;
+        private const int tileSize = 100;
+
+        /// <summary>
+        /// Board offset from top left corner of GUI
+        /// </summary>
+        private const int boardOffset = 200;
 
         /// <summary>
         /// The number of tiles we want
@@ -86,7 +91,7 @@ namespace ChessGUI
                     {
                         Size = new Size(tileSize, tileSize),
                         //The +100 shifts the overall board down to (100,100) top left corner
-                        Location = new Point(tileSize * column + 100, tileSize * row + 100),
+                        Location = new Point(tileSize * column + boardOffset - 1, tileSize * row + boardOffset - 1),
 
                         BackgroundImageLayout = ImageLayout.Center,
                     };
@@ -192,6 +197,41 @@ namespace ChessGUI
         /// <param name="e"></param>
         private void Draw_Board(object? sender, PaintEventArgs e)
         {
+            //Draws the files on the board
+            for (int i = 0; i < 8; i++)
+            {
+                var fileSquare = new Label
+                {
+                    Size = new Size(tileSize, tileSize),
+                    //The +100 shifts the overall board down to (100,100) top left corner
+                    Location = new Point(100, tileSize * i + boardOffset),
+
+                    //BackgroundImageLayout = ImageLayout.Center,
+                    Text = $"{i + 1}",
+
+                    BackColor = Color.Blue,
+                };
+
+                Controls.Add(fileSquare);
+            }
+
+            //Draws the ranks of the board
+            for (int i = 0; i < 8; i++)
+            {
+                var rankSquare = new Label
+                {
+                    Size = new Size(tileSize, tileSize),
+                    //The +100 shifts the overall board down to (100,100) top left corner
+                    Location = new Point(tileSize * i + boardOffset, tileSize * 8 + boardOffset),
+
+                    //BackgroundImageLayout = ImageLayout.Center,
+
+                    BackColor = Color.Blue,
+                };
+
+                Controls.Add(rankSquare);
+            }
+
             if (CheckWhiteIsInCheck())
             {
                 GameMessagesTextBox.Text = "White Is In Check!";
@@ -917,8 +957,8 @@ namespace ChessGUI
         {
             Panel p = (Panel)sender;
 
-            int squareColumn = p.Location.X / 60 - 1;
-            int squareRow = p.Location.Y / 60 - 1;
+            int squareColumn = p.Location.X / tileSize - 1;
+            int squareRow = p.Location.Y / tileSize - 1;
 
             Square squareClicked = chessBoard[squareColumn, squareRow];
 
@@ -929,15 +969,15 @@ namespace ChessGUI
                 if (squareClicked.IsOccupiedByWhite() && whiteTurn)
                 {
                     currSquareClicked = squareClicked;
-                    currSquareClicked.Col = p.Location.X / 60 - 1;
-                    currSquareClicked.Row = p.Location.Y / 60 - 1;
+                    currSquareClicked.Col = p.Location.X / tileSize - 1;
+                    currSquareClicked.Row = p.Location.Y / tileSize - 1;
                 }
                 //Only set the current square clicked if it is a valid piece that can be moved (depending on whose turn)
                 else if (squareClicked.IsOccupiedByBlack() && !whiteTurn)
                 {
                     currSquareClicked = squareClicked;
-                    currSquareClicked.Col = p.Location.X / 60 - 1;
-                    currSquareClicked.Row = p.Location.Y / 60 - 1;
+                    currSquareClicked.Col = p.Location.X / tileSize - 1;
+                    currSquareClicked.Row = p.Location.Y / tileSize - 1;
                 }
                 //If a square that is not occupied is selected, tell user to select an occupied square
                 else if (!squareClicked.IsOccupied())
@@ -956,14 +996,14 @@ namespace ChessGUI
                 if (currSquareClicked.IsOccupiedByWhite() && squareClicked.IsOccupiedByWhite())
                 {
                     currSquareClicked = squareClicked;
-                    currSquareClicked.Col = p.Location.X / 60 - 1;
-                    currSquareClicked.Row = p.Location.Y / 60 - 1;
+                    currSquareClicked.Col = p.Location.X / tileSize - 1;
+                    currSquareClicked.Row = p.Location.Y / tileSize - 1;
                 }
                 else if (currSquareClicked.IsOccupiedByBlack() && squareClicked.IsOccupiedByBlack())
                 {
                     currSquareClicked = squareClicked;
-                    currSquareClicked.Col = p.Location.X / 60 - 1;
-                    currSquareClicked.Row = p.Location.Y / 60 - 1;
+                    currSquareClicked.Col = p.Location.X / tileSize - 1;
+                    currSquareClicked.Row = p.Location.Y / tileSize - 1;
                 }
                 //MOVE PHASE:
                 else
@@ -982,8 +1022,8 @@ namespace ChessGUI
         {
             Panel p = (Panel)sender;
 
-            int requestedCol = p.Location.X / 60 - 1;
-            int requestedRow = p.Location.Y / 60 - 1;
+            int requestedCol = p.Location.X / tileSize - 1;
+            int requestedRow = p.Location.Y / tileSize - 1;
 
             Square squareHovering = chessBoard[requestedCol, requestedRow];
 
@@ -991,7 +1031,7 @@ namespace ChessGUI
             {
                 p.Cursor = Cursors.Hand;
             }
-            else if (currSquareClicked is not null && MoveIsLegal(requestedCol,requestedRow))
+            else if (currSquareClicked is not null && MoveIsLegal(requestedCol, requestedRow))
             {
                 p.Cursor = Cursors.Hand;
             }
