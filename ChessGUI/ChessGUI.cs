@@ -209,7 +209,11 @@ namespace ChessGUI
                     //BackgroundImageLayout = ImageLayout.Center,
                     Text = $"{i + 1}",
 
-                    BackColor = Color.Blue,
+                    TextAlign = ContentAlignment.MiddleCenter,
+
+                    Font = new Font("Arial", 24, FontStyle.Bold),
+
+                    ForeColor = Color.White,
                 };
 
                 Controls.Add(fileSquare);
@@ -224,9 +228,13 @@ namespace ChessGUI
                     //The +100 shifts the overall board down to (100,100) top left corner
                     Location = new Point(tileSize * i + boardOffset, tileSize * 8 + boardOffset),
 
-                    //BackgroundImageLayout = ImageLayout.Center,
+                    Text = $"{(char)(i + 65)}",
 
-                    BackColor = Color.Blue,
+                    TextAlign = ContentAlignment.MiddleCenter,
+
+                    Font = new Font("Arial", 24, FontStyle.Bold),
+
+                    ForeColor = Color.White,
                 };
 
                 Controls.Add(rankSquare);
