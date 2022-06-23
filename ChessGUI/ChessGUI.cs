@@ -1024,8 +1024,8 @@ namespace ChessGUI
         /// <summary>
         /// Event handler when the user hovers over a square
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">Panel that is currently being hovered over</param>
+        /// <param name="e">Not Used</param>
         private void Square_Hover(object? sender, EventArgs e)
         {
             Panel p = (Panel)sender;

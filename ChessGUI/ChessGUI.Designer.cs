@@ -35,7 +35,7 @@
             // 
             this.GameMessagesTextBox.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.GameMessagesTextBox.ForeColor = System.Drawing.Color.Red;
-            this.GameMessagesTextBox.Location = new System.Drawing.Point(423, 53);
+            this.GameMessagesTextBox.Location = new System.Drawing.Point(450, 53);
             this.GameMessagesTextBox.Margin = new System.Windows.Forms.Padding(6);
             this.GameMessagesTextBox.Name = "GameMessagesTextBox";
             this.GameMessagesTextBox.Size = new System.Drawing.Size(394, 61);
