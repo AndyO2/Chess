@@ -23,27 +23,5 @@ namespace Chess
         {
             firstMove = true;
         }
-         
-        /// <summary>
-        /// Method that determines if a move is legal for this piece
-        /// </summary>
-        /// <param name="requestedRow"></param>
-        /// <param name="requestedColumn"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public override bool MoveIsLegal(int requestedRow, int requestedColumn)
-        {
-            if(requestedRow < 0 || requestedRow > 7 || requestedColumn < 0 || requestedColumn > 7)
-            {
-                return false;
-            }
-
-            if (firstMove)
-            {
-
-            }
-
-            return true;
-        }
     }
 }

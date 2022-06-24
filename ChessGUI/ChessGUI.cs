@@ -273,7 +273,7 @@ namespace ChessGUI
 
                     if (occupant is Pawn)
                     {
-                        if (occupant.isWhite())
+                        if (occupant.IsWhite())
                         {
                             chessBoardPanels[column, row].BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhitePawn.png");
                         }
@@ -284,7 +284,7 @@ namespace ChessGUI
                     }
                     else if (occupant is King)
                     {
-                        if (occupant.isWhite())
+                        if (occupant.IsWhite())
                         {
                             chessBoardPanels[column, row].BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteKing.png");
                         }
@@ -295,7 +295,7 @@ namespace ChessGUI
                     }
                     else if (occupant is Queen)
                     {
-                        if (occupant.isWhite())
+                        if (occupant.IsWhite())
                         {
                             chessBoardPanels[column, row].BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteQueen.png");
                         }
@@ -306,7 +306,7 @@ namespace ChessGUI
                     }
                     else if (occupant is Rook)
                     {
-                        if (occupant.isWhite())
+                        if (occupant.IsWhite())
                         {
                             chessBoardPanels[column, row].BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteRook.png");
                         }
@@ -317,7 +317,7 @@ namespace ChessGUI
                     }
                     else if (occupant is Bishop)
                     {
-                        if (occupant.isWhite())
+                        if (occupant.IsWhite())
                         {
                             chessBoardPanels[column, row].BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteBishop.png");
                         }
@@ -328,7 +328,7 @@ namespace ChessGUI
                     }
                     else if (occupant is Knight)
                     {
-                        if (occupant.isWhite())
+                        if (occupant.IsWhite())
                         {
                             chessBoardPanels[column, row].BackgroundImage = Image.FromFile("..\\..\\..\\..\\ChessPieceImages\\WhiteKnight.png");
                         }
@@ -371,12 +371,12 @@ namespace ChessGUI
                 else
                 {
                     //Update the location of the piece on the chess board
-                    chessBoard[requestedColumn, requestedRow].occupant = currSquareClicked.occupant;
+                    chessBoard[requestedColumn, requestedRow].SetOccupant(currSquareClicked.occupant);
 
                     //Update the piece's location
-                    chessBoard[requestedColumn, requestedRow].occupant.Location = new Point(requestedColumn, requestedRow);
+                    chessBoard[requestedColumn, requestedRow].occupant.SetLocation(requestedColumn, requestedRow);
 
-                    chessBoard[currSquareClicked.Col, currSquareClicked.Row].occupant = null;
+                    chessBoard[currSquareClicked.Col, currSquareClicked.Row].SetOccupant(null);
                 }
 
                 currSquareClicked = null;
@@ -402,7 +402,7 @@ namespace ChessGUI
 
             if (piece is Pawn)
             {
-                if (piece.isWhite())
+                if (piece.IsWhite())
                 {
                     //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
                     if (chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite())
@@ -481,7 +481,7 @@ namespace ChessGUI
             }
             else if (piece is Knight)
             {
-                if (piece.isWhite())
+                if (piece.IsWhite())
                 {
                     //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
                     if (chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite())
@@ -521,7 +521,7 @@ namespace ChessGUI
             else if (piece is Bishop)
             {
                 //CAN NEVER OCCUPY A SQUARE THAT IS ALREADY OCCUPIED BY SAME COLOR
-                if ((chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite() && piece.isWhite()) || (chessBoard[requestedColumn, requestedRow].IsOccupiedByBlack() && piece.isBlack()))
+                if ((chessBoard[requestedColumn, requestedRow].IsOccupiedByWhite() && piece.IsWhite()) || (chessBoard[requestedColumn, requestedRow].IsOccupiedByBlack() && piece.IsBlack()))
                 {
                     return false;
                 }
@@ -765,27 +765,27 @@ namespace ChessGUI
                 if(castleRight)
                 {
                     //Move the white king to the right two squares
-                    chessBoard[6, 7].occupant = currSquareClicked.occupant;
-                    chessBoard[6, 7].occupant.Location = new Point(6, 7);
-                    chessBoard[4, 7].occupant = null;
+                    chessBoard[6, 7].SetOccupant(currSquareClicked.occupant);
+                    chessBoard[6, 7].occupant.SetLocation(6,7);
+                    chessBoard[4, 7].SetOccupant(null);
 
                     //Move the white rook to the left
-                    chessBoard[5, 7].occupant = chessBoard[7, 7].occupant;
-                    chessBoard[5, 7].occupant.Location = new Point(5, 7);
-                    chessBoard[7, 7].occupant = null;
+                    chessBoard[5, 7].SetOccupant(chessBoard[7, 7].occupant);
+                    chessBoard[5, 7].occupant.SetLocation(5,7);
+                    chessBoard[7, 7].SetOccupant(null);
                 }
                 //castle left
                 else
                 {
                     //Move white king to the left two squares
-                    chessBoard[2,7].occupant = currSquareClicked.occupant;
-                    chessBoard[2,7].occupant.Location = new Point(2, 7);
-                    chessBoard[4, 7].occupant = null;
+                    chessBoard[2,7].SetOccupant(currSquareClicked.occupant);
+                    chessBoard[2,7].occupant.SetLocation(2, 7);
+                    chessBoard[4, 7].SetOccupant(null);
 
                     //Move the rook to the right
-                    chessBoard[3,7].occupant = chessBoard[0,7].occupant;
-                    chessBoard[3,7].occupant.Location = new Point(3, 7);
-                    chessBoard[0,7].occupant = null;
+                    chessBoard[3,7].SetOccupant(chessBoard[0,7].occupant);
+                    chessBoard[3,7].occupant.SetLocation(3, 7);
+                    chessBoard[0,7].SetOccupant(null);
                 }
             }
             else
@@ -794,27 +794,27 @@ namespace ChessGUI
                 if (castleRight)
                 {
                     //Move the white king to the right two squares
-                    chessBoard[6, 0].occupant = currSquareClicked.occupant;
-                    chessBoard[6, 0].occupant.Location = new Point(6, 0);
-                    chessBoard[4, 0].occupant = null;
+                    chessBoard[6, 0].SetOccupant(currSquareClicked.occupant);
+                    chessBoard[6, 0].occupant.SetLocation(6, 0);
+                    chessBoard[4, 0].SetOccupant(null);
 
                     //Move the black rook to the left
-                    chessBoard[5, 0].occupant = chessBoard[7, 0].occupant;
-                    chessBoard[5, 0].occupant.Location = new Point(5, 0);
-                    chessBoard[7, 0].occupant = null;
+                    chessBoard[5, 0].SetOccupant(chessBoard[7, 0].occupant);
+                    chessBoard[5, 0].occupant.SetLocation(5, 0);
+                    chessBoard[7, 0].SetOccupant(null);
                 }
                 //castle left
                 else
                 {
                     //Move black king to the left two squares
-                    chessBoard[2, 0].occupant = currSquareClicked.occupant;
-                    chessBoard[2, 0].occupant.Location = new Point(2, 0);
-                    chessBoard[4, 0].occupant = null;
+                    chessBoard[2, 0].SetOccupant(currSquareClicked.occupant);
+                    chessBoard[2, 0].occupant.SetLocation(2, 0);
+                    chessBoard[4, 0].SetOccupant(null);
 
                     //Move the rook to the right
-                    chessBoard[3, 0].occupant = chessBoard[0, 0].occupant;
-                    chessBoard[3, 0].occupant.Location = new Point(3, 0);
-                    chessBoard[0, 0].occupant = null;
+                    chessBoard[3, 0].SetOccupant(chessBoard[0, 0].occupant);
+                    chessBoard[3, 0].occupant.SetLocation(3, 0);
+                    chessBoard[0, 0].SetOccupant(null);
                 }
             }
         }
@@ -824,7 +824,7 @@ namespace ChessGUI
         /// </summary>
         /// <param name="requestedCol"></param>
         /// <param name="requestedRow"></param>
-        /// <returns></returns>
+        /// <returns>whether castling is allowed</returns>
         private bool CheckCastlingAllowed(int requestedCol, int requestedRow)
         {
             //TODO: Doesn't detect if the king has already moved
@@ -843,7 +843,7 @@ namespace ChessGUI
                     if(requestedCol == 6 && requestedRow == 7)
                     {
                         //1) Check if there is a rook at (7,7), it is the same color and it has not moved
-                        if(chessBoard[7,7].GetOccupant() is Rook r && r.isWhite() && !r.hasMoved)
+                        if(chessBoard[7,7].GetOccupant() is Rook r && r.IsWhite() && !r.hasMoved)
                         {
                             //2) Check that there is not a piece at (4,7) (5,7) and (6,7)
                             if(!chessBoard[5,7].IsOccupied() && !chessBoard[6, 7].IsOccupied())
@@ -856,7 +856,7 @@ namespace ChessGUI
                     else if(requestedCol == 2 && requestedRow == 7)
                     {
                         //1) Check if there is a rook at (0,7), it is the same color and it has not moved
-                        if (chessBoard[0, 7].GetOccupant() is Rook r && r.isWhite() && !r.hasMoved)
+                        if (chessBoard[0, 7].GetOccupant() is Rook r && r.IsWhite() && !r.hasMoved)
                         {
                             //2) Check that there is not a piece at (1,7) (2,7) and (3,7)
                             if (!chessBoard[1, 7].IsOccupied() && !chessBoard[2, 7].IsOccupied() && !chessBoard[3, 7].IsOccupied())
@@ -873,7 +873,7 @@ namespace ChessGUI
                     if (requestedCol == 6 && requestedRow == 0)
                     {
                         //1) Check if there is a rook at (7,0), it is the same color and it has not moved
-                        if (chessBoard[7, 0].GetOccupant() is Rook r && r.isBlack() && !r.hasMoved)
+                        if (chessBoard[7, 0].GetOccupant() is Rook r && r.IsBlack() && !r.hasMoved)
                         {
                             //2) Check that there is not a piece at (4,0) (5,0) and (6,0)
                             if (!chessBoard[5, 0].IsOccupied() && !chessBoard[6, 0].IsOccupied())
@@ -886,7 +886,7 @@ namespace ChessGUI
                     else if (requestedCol == 2 && requestedRow == 0)
                     {
                         //1) Check if there is a rook at (0,0), it is the same color and it has not moved
-                        if (chessBoard[0, 0].GetOccupant() is Rook r && r.isBlack() && !r.hasMoved)
+                        if (chessBoard[0, 0].GetOccupant() is Rook r && r.IsBlack() && !r.hasMoved)
                         {
                             //2) Check that there is not a piece at (1,0) (2,0)
                             if (!chessBoard[1, 0].IsOccupied() && !chessBoard[2, 0].IsOccupied() && !chessBoard[3, 0].IsOccupied())

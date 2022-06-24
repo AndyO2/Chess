@@ -11,10 +11,5 @@ namespace Chess
         public Queen(char color, int row, int column) : base(color, row, column)
         {
         }
-
-        public override bool MoveIsLegal(int requestedRow, int requestedColumn)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

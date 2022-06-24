@@ -13,10 +13,5 @@ namespace Chess
         {
             hasMoved = false;
         }
-
-        public override bool MoveIsLegal(int requestedRow, int requestedColumn)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
