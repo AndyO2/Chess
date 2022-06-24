@@ -355,8 +355,10 @@ namespace ChessGUI
             if (MoveIsLegal(requestedColumn, requestedRow))
             {
                 //Special Move: Castling
-                if(pieceToMove is King)
+                if(pieceToMove is King k)
                 {
+                    k.hasMoved = true;
+
                     //castle right
                     if(requestedColumn == 6)
                     {
@@ -366,6 +368,16 @@ namespace ChessGUI
                     else if( requestedColumn == 2)
                     {
                         Castle(false);
+                    }
+                    else
+                    {
+                        //Update the location of the piece on the chess board
+                        chessBoard[requestedColumn, requestedRow].SetOccupant(currSquareClicked.occupant);
+
+                        //Update the piece's location
+                        chessBoard[requestedColumn, requestedRow].occupant.SetLocation(requestedColumn, requestedRow);
+
+                        chessBoard[currSquareClicked.Col, currSquareClicked.Row].SetOccupant(null);
                     }
                 }
                 else
