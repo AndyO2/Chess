@@ -17,7 +17,6 @@ Repo:       https://github.com/AndyO2/Chess.git
     1) Determining checkmate
     2) Determing if moving a piece moves into check deeming it an invalid move
     3) En Passant
-    3) Unable to detect whether or not the king has moved deeming castling invalid
 
 # Time Expenditures:
 
