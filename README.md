@@ -20,7 +20,7 @@ Repo:       https://github.com/AndyO2/Chess.git
 
 # Time Expenditures:
 
-    1. Assignment Eight:   Predicted Hours:          30        Actual Hours:     
+    Predicted Hours:          30        Actual Hours:     
     
 # What I Learned
     
