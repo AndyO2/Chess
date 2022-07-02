@@ -13,9 +13,9 @@ Repo:       https://github.com/AndyO2/Chess.git
     4) Check
     5) Tracking Turns
     
-    Missing Functionality
+    Not Yet Implemented
     1) Determining checkmate
-    2) Determing if moving a piece moves into check deeming it an invalid move
+    2) Determining if moving a piece moves into check deeming it an invalid move
     3) En Passant
 
 # Time Expenditures:
