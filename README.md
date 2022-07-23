@@ -13,20 +13,19 @@ Repo:       https://github.com/AndyO2/Chess.git
     4) Check
     5) Tracking Turns
     
-    Missing Functionality
+    Not Yet Implemented
     1) Determining checkmate
-    2) Determing if moving a piece moves into check deeming it an invalid move
+    2) Determining if moving a piece moves into check deeming it an invalid move
     3) En Passant
-    3) Unable to detect whether or not the king has moved deeming castling invalid
 
 # Time Expenditures:
 
-    1. Assignment Eight:   Predicted Hours:          30        Actual Hours:     
+    Predicted Hours:          30        Actual Hours:     
     
 # What I Learned
     
     1) Importance of Model View Controller architecture
     2) Importance of Separation of Concerns
-    2) Loading and drawing images from a file
-    3) Using 2D array of Panels to draw a board with (0,0) as the top left corner of the board
-    4) Shallow copy versus hard copy
+    3) Loading and drawing images from a file
+    4) Using 2D array of Panels to draw a board with (0,0) as the top left corner of the board
+    5) Shallow copy versus hard copy
