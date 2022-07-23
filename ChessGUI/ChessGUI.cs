@@ -319,6 +319,16 @@ namespace ChessGUI
                     {
                         Castle(false);
                     }
+                    else
+                    {
+                        //Update the location of the piece on the chess board
+                        chessBoard[requestedColumn, requestedRow].occupant = currSquareClicked.occupant;
+
+                        //Update the piece's location
+                        chessBoard[requestedColumn, requestedRow].occupant.Location = new Point(requestedColumn, requestedRow);
+
+                        chessBoard[currSquareClicked.Col, currSquareClicked.Row].occupant = null;
+                    }
                 }
                 else
                 {
