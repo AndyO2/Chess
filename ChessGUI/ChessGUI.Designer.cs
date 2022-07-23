@@ -45,7 +45,6 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // AFileLabel
@@ -233,15 +232,6 @@
             this.label14.TabIndex = 9;
             this.label14.Text = "8";
             // 
-            // textBox1
-            // 
-            this.textBox1.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textBox1.ForeColor = System.Drawing.Color.Red;
-            this.textBox1.Location = new System.Drawing.Point(267, 87);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(214, 34);
-            this.textBox1.TabIndex = 1;
-            // 
             // Chess
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -256,7 +246,6 @@
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label14);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.GameMessagesTextBox);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -293,6 +282,5 @@
         private Label label12;
         private Label label13;
         private Label label14;
-        private TextBox textBox1;
     }
 }
