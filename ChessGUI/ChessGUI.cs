@@ -10,7 +10,9 @@ namespace ChessGUI
         /// </summary>
         private Square[,] chessBoard;
 
-        // class member array of Panels to track chessboard tiles
+        /// <summary>
+        /// class member array of Panels to track chessboard tiles
+        /// </summary>
         private Panel[,] chessBoardPanels;
 
         /// <summary>
@@ -371,24 +373,12 @@ namespace ChessGUI
                     }
                     else
                     {
-                        //Update the location of the piece on the chess board
-                        chessBoard[requestedColumn, requestedRow].SetOccupant(currSquareClicked.occupant);
-
-                        //Update the piece's location
-                        chessBoard[requestedColumn, requestedRow].occupant.SetLocation(requestedColumn, requestedRow);
-
-                        chessBoard[currSquareClicked.Col, currSquareClicked.Row].SetOccupant(null);
+                        Move(requestedColumn, requestedRow);
                     }
                 }
                 else
                 {
-                    //Update the location of the piece on the chess board
-                    chessBoard[requestedColumn, requestedRow].SetOccupant(currSquareClicked.occupant);
-
-                    //Update the piece's location
-                    chessBoard[requestedColumn, requestedRow].occupant.SetLocation(requestedColumn, requestedRow);
-
-                    chessBoard[currSquareClicked.Col, currSquareClicked.Row].SetOccupant(null);
+                    Move(requestedColumn, requestedRow);
                 }
 
                 currSquareClicked = null;
@@ -401,10 +391,20 @@ namespace ChessGUI
             }
         }
 
+        private void Move(int requestedColumn, int requestedRow)
+        {
+            //Update the location of the piece on the chess board
+            chessBoard[requestedColumn, requestedRow].SetOccupant(currSquareClicked.occupant);
+
+            //Update the piece's location
+            chessBoard[requestedColumn, requestedRow].occupant.SetLocation(requestedColumn, requestedRow);
+
+            chessBoard[currSquareClicked.Col, currSquareClicked.Row].SetOccupant(null);
+        }
+
         /// <summary>
         /// Helper method that determines if a move is legal
         /// </summary>
-        /// <param name="piece"></param>
         /// <param name="requestedColumn"></param>
         /// <param name="requestedRow"></param>
         /// <returns></returns>
@@ -1045,20 +1045,20 @@ namespace ChessGUI
             int requestedCol = p.Location.X / tileSize - 1;
             int requestedRow = p.Location.Y / tileSize - 1;
 
-            Square squareHovering = chessBoard[requestedCol, requestedRow];
+            //Square squareHovering = chessBoard[requestedCol, requestedRow];
 
-            if (squareHovering.IsOccupied() && currSquareClicked is null)
-            {
-                p.Cursor = Cursors.Hand;
-            }
-            else if (currSquareClicked is not null && MoveIsLegal(requestedCol, requestedRow))
-            {
-                p.Cursor = Cursors.Hand;
-            }
-            else
-            {
-                p.Cursor = Cursors.No;
-            }
+            //if (squareHovering.IsOccupied() && currSquareClicked is null)
+            //{
+            //    p.Cursor = Cursors.Hand;
+            //}
+            //else if (currSquareClicked is not null && MoveIsLegal(requestedCol, requestedRow))
+            //{
+            //    p.Cursor = Cursors.Hand;
+            //}
+            //else
+            //{
+            //    p.Cursor = Cursors.No;
+            //}
         }
     }
 }
